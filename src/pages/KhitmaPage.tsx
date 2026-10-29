@@ -163,6 +163,12 @@ export const KhitmaPage: React.FC = () => {
   const handleSlotToggle = (slotKey: PrayerSlotKey) => {
     if (!challenge) return;
 
+    if (challenge.isFailedSession) {
+      setImmutableAlert('Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale.');
+      setTimeout(() => setImmutableAlert(null), 4000);
+      return;
+    }
+
     if (isDayLocked(challenge.startDate, selectedDay)) {
       setImmutableAlert('Maalintani weli ma soo gaarin! Waxaad calaamadayn kartaa oo kaliya maalmaha furmay.');
       setTimeout(() => setImmutableAlert(null), 3500);
@@ -207,6 +213,13 @@ export const KhitmaPage: React.FC = () => {
   // Quick check off today's next sequential slot on the active day
   const handleCheckOffToday = () => {
     if (!challenge) return;
+
+    if (challenge.isFailedSession) {
+      setImmutableAlert('Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale.');
+      setTimeout(() => setImmutableAlert(null), 4000);
+      return;
+    }
+
     const currentActiveDay = stats.currentAllowedDay || 1;
 
     if (selectedDay !== currentActiveDay) {
@@ -473,6 +486,30 @@ export const KhitmaPage: React.FC = () => {
               VIEW 2: DEDICATED TASK PAGE & DAILY 5-PRAYER TICKING
              ========================================================================= */
           <div className="space-y-6 animate-in fade-in">
+            {/* FAILED KHATM SESSION NOTICE & RESET LOCK */}
+            {challenge?.isFailedSession && (
+              <div className="p-5 sm:p-6 rounded-3xl bg-rose-50 dark:bg-rose-950/70 border-2 border-rose-300 dark:border-rose-800 text-center space-y-4 shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto">
+                  <AlertCircle className="w-7 h-7" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-base sm:text-xl font-black text-rose-700 dark:text-rose-300">
+                    Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+                    Kalfadhigan Khatmka si buuxda ayaa loo xidhay maadaama buundada imtixaankaagu ka yaraatay 7/10. Si aad mar kale u hesho fursad shahaado, fadlan bilow khatm cusub.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleResetKhatm}
+                  className="px-6 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Samee khatm kale (Bilow Khatm Cusub)</span>
+                </button>
+              </div>
+            )}
             {/* 1. ONBOARDING EXPLANATION GUIDE (DETAILING PROGRAM & REQUIRED QUOTA PER PRAYER) */}
             {!isOnboardingDismissed && (
               <div className="relative overflow-hidden p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white border border-blue-800/60 shadow-lg space-y-4">

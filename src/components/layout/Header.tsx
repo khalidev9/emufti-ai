@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, Plus, SquarePen, PanelLeft, Globe, Check, ShieldCheck } from 'lucide-react';
+import { Menu, Plus, SquarePen, PanelLeft, Globe, Check, ShieldCheck, BookOpen } from 'lucide-react';
 import { useChat } from '../../context/ChatContext';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -88,15 +88,15 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu className="w-5 h-5 text-blue-600 dark:text-white" />
         </button>
 
-        {/* Brand Badge with Frontend Logo */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          <div className="w-8 h-8 rounded-xl bg-blue-600 dark:bg-slate-800 text-white flex items-center justify-center font-black text-sm shadow-sm shrink-0 overflow-hidden relative">
-            <img
-              src="/logo-frontend.png"
-              alt="EMufti AI Logo"
-              className="w-full h-full object-contain p-0.5 bg-white dark:bg-slate-900 rounded-lg"
-            />
-            <span className="sr-only">E</span>
+        {/* Brand Badge with Dedicated Clean Quran Icon */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 sm:gap-2.5 shrink-0 group focus:outline-none"
+          title="EMufti AI - Islamic AI Scholar"
+        >
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-600 dark:to-slate-800 text-white flex items-center justify-center font-black text-sm shadow-sm shrink-0 overflow-hidden relative group-hover:scale-105 transition-transform">
+            <BookOpen className="w-4 h-4 text-white" />
+            <span className="sr-only">EMufti AI Quran</span>
           </div>
           <div className="flex flex-col">
             <h1 className="text-sm sm:text-base font-bold text-blue-600 dark:text-white leading-tight flex items-center gap-1">
@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Screen-reader / contract compatibility */}
             <span className="sr-only bg-blue-600 animate-ping">Online</span>
           </div>
-        </div>
+        </Link>
 
         {/* Desktop sidebar expand toggle (when sidebar is closed) */}
         {!isSidebarOpen && onToggleSidebar && (
@@ -133,6 +133,17 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Right: Actions */}
       <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+        {/* Dedicated Quran Navigation Link */}
+        <Link
+          to="/quran"
+          data-testid="header-nav-quran"
+          className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
+          title="Xarunta Qur'aanka (Holy Quran Mushaf)"
+        >
+          <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+          <span>Quran</span>
+        </Link>
+
         {/* Certificate / Quran Certificate Navigation Link */}
         <Link
           to="/verify-certificate"

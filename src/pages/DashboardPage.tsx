@@ -4,18 +4,13 @@ import {
   Compass,
   BookOpen,
   MessageSquare,
-  Trophy,
-  Mic,
   Bookmark,
   Sparkles,
   ArrowRight,
   Clock,
   ShieldCheck,
   ChevronRight,
-  Headphones,
-  Layers,
   Zap,
-  HelpCircle,
 } from 'lucide-react';
 import { Header } from '../components/layout/Header';
 import { Sidebar } from '../components/layout/Sidebar';
@@ -33,7 +28,6 @@ import { QuranReadingProgress, SavedItem, Conversation, PlanSlug } from '../type
 
 import { PrayerTimesWidget } from '../components/dashboard/PrayerTimesWidget';
 import { ReadingStreakWidget } from '../components/dashboard/ReadingStreakWidget';
-import { QuranAnalyticsWidget } from '../components/dashboard/QuranAnalyticsWidget';
 import { QuranKhatmChallengeWidget } from '../components/dashboard/QuranKhatmChallengeWidget';
 
 export const DashboardPage: React.FC = () => {
@@ -112,7 +106,7 @@ export const DashboardPage: React.FC = () => {
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
 
-        <main className="flex-1 overflow-y-auto chat-scrollbar p-3 sm:p-6 lg:p-8 pb-24 lg:pb-8 w-full max-w-full overflow-x-hidden box-border">
+        <main className="flex-1 overflow-y-auto chat-scrollbar p-3 sm:p-6 lg:p-8 pb-28 lg:pb-8 w-full max-w-full overflow-x-hidden box-border">
           <div className="max-w-6xl mx-auto space-y-6">
             {/* 1. Modern Welcome & Islamic Date Header */}
             <div className="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-50/90 via-white to-blue-50/40 border border-blue-100 shadow-xs">
@@ -255,73 +249,22 @@ export const DashboardPage: React.FC = () => {
               </div>
             )}
 
-            {/* 4. Advanced Quran Reading Analytics & Statistics (Pages, Juzz, Ayahs) */}
-            <QuranAnalyticsWidget userId={userId} />
-
-            {/* 5. Location-Based Prayer Times & Reading Streak Row */}
+            {/* 4. Location-Based Prayer Times & Reading Streak Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <PrayerTimesWidget />
               <ReadingStreakWidget userId={userId} />
             </div>
 
-            {/* 6. 1-Month Quran Completion Khidma (Khatm Challenge: 20 Pages / 5 Prayer Slots + PDF Certificate) */}
+            {/* 5. 1-Month Quran Completion Khidma (Khatm Challenge: 20 Pages / 5 Prayer Slots + PDF Certificate) */}
             <QuranKhatmChallengeWidget
               userId={userId}
               defaultUserName={profile?.display_name || user?.email?.split('@')[0] || 'Seeker of Knowledge'}
             />
 
-            {/* 7. Core Application Navigation & Recent Consultations */}
+            {/* 6. Recent Consultations & Subscription Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left Column (2 Cols): Quick Hub & Recent Chats */}
-              <div className="lg:col-span-2 space-y-6">
-                {/* 8 Core Application Sections Quick Hub */}
-                <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-                      <Layers className="w-4 h-4 text-blue-600" />
-                      <span>Islamic Learning Navigation</span>
-                    </h2>
-                    <span className="text-xs text-slate-500 hidden sm:inline">
-                      All Core Sections
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    {[
-                      { to: '/chat', label: 'EMufti Chat', desc: 'Islamic AI Scholar', icon: MessageSquare, color: 'text-blue-600 bg-blue-50' },
-                      { to: '/quran', label: "Xarunta Qur'aanka", desc: '114 Surahs & 30 Juz', icon: BookOpen, color: 'text-blue-600 bg-blue-50' },
-                      { to: '/khitma', label: 'Khatm Challenge', desc: '604 Pages & Tasks', icon: Trophy, color: 'text-emerald-600 bg-emerald-50' },
-                      { to: '/quran?tab=subcis', label: 'Subcis Practice', desc: 'Alternating Recitation', icon: Mic, color: 'text-cyan-600 bg-cyan-50' },
-                      { to: '/quran?tab=50qaris', label: '50 Reciters', desc: 'Global Qurra Audio', icon: Headphones, color: 'text-indigo-600 bg-indigo-50' },
-                      { to: '/saved', label: 'Saved Answers', desc: 'Custom Folders & Proofs', icon: Bookmark, color: 'text-rose-600 bg-rose-50' },
-                      { to: '/pricing', label: 'Subscription Plans', desc: 'Upgrade Limits', icon: Sparkles, color: 'text-purple-600 bg-purple-50' },
-                      { to: '/verify-certificate', label: 'Hubinta Shahaadada', desc: 'Verify Certificate ID', icon: ShieldCheck, color: 'text-blue-600 bg-blue-50' },
-                    ].map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <Link
-                          key={item.to}
-                          to={item.to}
-                          className="p-3.5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/30 transition-all text-left flex flex-col justify-between group cursor-pointer"
-                        >
-                          <div className={`w-8 h-8 rounded-xl ${item.color} flex items-center justify-center mb-2 group-hover:scale-105 transition-transform`}>
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="text-xs font-bold text-slate-900 group-hover:text-blue-600 block truncate transition-colors">
-                              {item.label}
-                            </span>
-                            <span className="text-[10px] text-slate-500 block truncate mt-0.5">
-                              {item.desc}
-                            </span>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Recent Consultations */}
+              {/* Left Column (2 Cols): Recent Consultations */}
+              <div className="lg:col-span-2">
                 <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
                   <div className="flex items-center justify-between">
                     <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">

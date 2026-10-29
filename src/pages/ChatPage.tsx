@@ -109,10 +109,16 @@ export const ChatPage: React.FC = () => {
     }
   }, [conversationId, activeConversation?.id, conversations.length, selectConversation, navigate]);
 
+  const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior, block: 'end' });
+    }
+  };
+
   // Smart auto scroll to bottom without interrupting user reading previous messages
   useEffect(() => {
     if (isNearBottomRef.current) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      scrollToBottom('smooth');
     }
   }, [messages]);
 
@@ -121,6 +127,8 @@ export const ChatPage: React.FC = () => {
     targetLanguage?: 'auto' | 'en' | 'so' | 'ar',
     contextPrompt?: string
   ) => {
+    isNearBottomRef.current = true;
+    setTimeout(() => scrollToBottom('auto'), 50);
     if (targetLanguage && targetLanguage !== 'auto') {
       setTargetLanguage(targetLanguage);
     }
@@ -180,7 +188,7 @@ export const ChatPage: React.FC = () => {
               {messages.length === 0 ? (
                 <WelcomeScreen onSelectPrompt={handleSelectSuggestedPrompt} />
               ) : (
-                <div className="flex-1 max-w-3xl w-full mx-auto px-3 sm:px-4 py-4 space-y-4">
+                <div className="flex-1 max-w-3xl w-full mx-auto px-3 sm:px-4 py-4 space-y-4 pb-28 sm:pb-36">
                   {messages.map((msg) => (
                     <ChatMessage
                       key={msg.id}
@@ -189,21 +197,25 @@ export const ChatPage: React.FC = () => {
                       onOpenShareModal={() => setIsShareModalOpen(true)}
                     />
                   ))}
-                  <div ref={messagesEndRef} className="h-4" />
+                  <div ref={messagesEndRef} className="h-6" />
                 </div>
               )}
             </main>
 
-            {/* ChatGPT Style Docked Composer: sits directly below messages, NEVER covers messages */}
+            {/* ChatGPT Style Docked Composer: sits directly below messages with solid backdrop, NEVER overlaps messages */}
             <div
-              className={`shrink-0 z-20 sticky bottom-0 transition-all duration-150 ${
+              className={`shrink-0 z-20 sticky bottom-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800/80 transition-all duration-150 ${
                 !isKeyboardOpen
-                  ? 'pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] lg:pb-0'
-                  : 'pb-[env(safe-area-inset-bottom,0px)]'
+                  ? 'pb-[calc(4.25rem+env(safe-area-inset-bottom,0px))] lg:pb-3'
+                  : 'pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]'
               }`}
             >
               <MessageComposer
-                onSendMessage={(prompt, contextPrompt) => sendMessage(prompt, undefined, contextPrompt)}
+                onSendMessage={(prompt, contextPrompt) => {
+                  isNearBottomRef.current = true;
+                  setTimeout(() => scrollToBottom('auto'), 50);
+                  sendMessage(prompt, undefined, contextPrompt);
+                }}
                 isKeyboardOpen={isKeyboardOpen}
                 onFocus={() => {
                   setIsInputFocused(true);

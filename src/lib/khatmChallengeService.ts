@@ -104,6 +104,8 @@ export interface KhatmChallengeData {
   quizScore?: number;
   quizPassed?: boolean;
   quizCompletedAt?: string;
+  isFailedSession?: boolean;
+  failedAt?: string;
 }
 
 export interface VerifiedCertificateRecord {
@@ -538,6 +540,24 @@ export function recordKhatmQuizResult(
     quizScore: score,
     quizPassed: passed,
     quizCompletedAt: new Date().toISOString(),
+    isFailedSession: !passed,
+    failedAt: !passed ? new Date().toISOString() : undefined,
+  };
+  saveKhatmChallenge(userId, updated);
+  return updated;
+}
+
+/**
+ * Permanently locks and marks a Khatm session as failed after < 7/10 quiz score.
+ */
+export function markKhatmSessionFailed(userId: string): KhatmChallengeData | null {
+  const current = getKhatmChallenge(userId);
+  if (!current) return null;
+  const updated: KhatmChallengeData = {
+    ...current,
+    quizPassed: false,
+    isFailedSession: true,
+    failedAt: new Date().toISOString(),
   };
   saveKhatmChallenge(userId, updated);
   return updated;

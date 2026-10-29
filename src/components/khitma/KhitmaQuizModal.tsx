@@ -6,13 +6,12 @@ import {
   XCircle,
   Award,
   Download,
-  RotateCcw,
   AlertTriangle,
   ArrowRight,
   Sparkles,
   Lock,
 } from 'lucide-react';
-import { KHATM_MANDATORY_QUIZ_QUESTIONS, QuranQuizQuestion } from '../../data/khatmQuranQuizData';
+import { getRandomKhatmQuizQuestions, QuranQuizQuestion } from '../../data/khatmQuranQuizData';
 import {
   KhatmChallengeData,
   recordKhatmQuizResult,
@@ -36,6 +35,7 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
   onResetChallenge,
   onSuccessPassed,
 }) => {
+  const [questions, setQuestions] = useState<QuranQuizQuestion[]>(() => getRandomKhatmQuizQuestions(10));
   const [currentIdx, setCurrentIdx] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, 'a' | 'b' | 'c' | 'd'>>({});
   const [timeLeft, setTimeLeft] = useState<number>(30);
@@ -43,13 +43,12 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
   const [score, setScore] = useState<number>(0);
   const [isPdfGenerating, setIsPdfGenerating] = useState<boolean>(false);
 
-  // Total questions = 10
-  const questions: QuranQuizQuestion[] = KHATM_MANDATORY_QUIZ_QUESTIONS.slice(0, 10);
-  const currentQuestion = questions[currentIdx];
+  const currentQuestion = questions[currentIdx] || questions[0];
 
-  // Reset quiz on modal open
+  // Reset and generate randomized 10 questions on modal open
   useEffect(() => {
     if (isOpen) {
+      setQuestions(getRandomKhatmQuizQuestions(10));
       setCurrentIdx(0);
       setSelectedAnswers({});
       setTimeLeft(30);
@@ -124,14 +123,6 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
     }
   };
 
-  const handleRestartQuiz = () => {
-    setCurrentIdx(0);
-    setSelectedAnswers({});
-    setTimeLeft(30);
-    setIsCompleted(false);
-    setScore(0);
-  };
-
   if (!isOpen) return null;
 
   const passed = score >= 7;
@@ -191,27 +182,27 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
               </div>
             </div>
 
-            {/* Arabic Ayah Card */}
+            {/* Arabic Ayah Card & Question */}
             <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-50/70 via-slate-50 to-indigo-50/50 dark:from-slate-800/80 dark:via-slate-850 dark:to-slate-800/50 border border-blue-200/80 dark:border-blue-900/50 text-center space-y-3 shadow-xs">
               <span className="inline-block px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300">
-                {currentQuestion.type === 'identify_surah'
-                  ? 'Aqoonso Suuradda Aayadda'
-                  : 'Maxaa ku xiga aayaddan?'}
+                {currentQuestion.categoryLabel}
               </span>
 
-              <div
-                dir="rtl"
-                className="font-quran-uthmani text-xl sm:text-2xl text-slate-900 dark:text-amber-200 font-bold leading-relaxed px-2"
-              >
-                {currentQuestion.arabicAyah}
-              </div>
+              {currentQuestion.arabicAyah && (
+                <div
+                  dir="rtl"
+                  className="font-quran-uthmani text-xl sm:text-2xl text-slate-900 dark:text-amber-200 font-bold leading-relaxed px-2"
+                >
+                  {currentQuestion.arabicAyah}
+                </div>
+              )}
 
               <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium max-w-xl mx-auto pt-1">
                 {currentQuestion.somaliQuestion}
               </p>
             </div>
 
-            {/* Options List: a, b, c, d */}
+            {/* Options List: 4 choices a, b, c, d */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {currentQuestion.options.map((opt) => {
                 const isSelected = selectedAnswers[currentQuestion.id] === opt.key;
@@ -253,7 +244,7 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
                 onClick={handleNextQuestion}
                 className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>{currentIdx === 9 ? 'Dhammee Imtixaanka' : "Su'aasha Xigta"}</span>
+                <span>{currentIdx === questions.length - 1 ? 'Dhammee Imtixaanka' : "Su'aasha Xigta"}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -304,7 +295,7 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
                 </div>
               </div>
             ) : (
-              /* FAIL FLOW: <= 6/10 */
+              /* FAIL FLOW: < 7/10 */
               <div className="space-y-5">
                 <div className="mx-auto w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 flex items-center justify-center shadow-lg shadow-rose-500/20">
                   <XCircle className="w-9 h-9" />
@@ -316,39 +307,30 @@ export const KhitmaQuizModal: React.FC<KhitmaQuizModalProps> = ({
                     <span>NATIIJADA: {score}/10 ({scorePercentage}%)</span>
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400">
-                    Fadlan quraanka dib u muraajaceey
+                  <h3 className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400 leading-snug">
+                    Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale
                   </h3>
 
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
-                    Si aad u hesho Shahaadada Khatmka ee rasmiga ah, waxaad u baahan tahay inaad hesho ugu yaraan <strong>7 su'aalood oo sax ah</strong> (7/10). Fadlan dib u muraajaceey aayadaha oo mar kale isku day ama bilow khidmad cusub.
+                    Si aad u hesho Shahaadada Khatmka ee rasmiga ah, waxaad u baahan tahay inaad hesho ugu yaraan <strong>7 su'aalood oo sax ah</strong> (7/10). Kalfadhigan Khatmka si rasmi ah ayaa loo xidhay maadaama aanad gaadhin heerka guusha.
                   </p>
                 </div>
 
-                {/* Locked Certificate Warning */}
-                <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-center gap-2">
-                  <Lock className="w-4 h-4 text-slate-400" />
-                  <span>Shahaadada PDF-ka ah hadda way xidhan tahay sababtoo ah imtixaanku ma guulaysan.</span>
+                {/* Locked Certificate Notice */}
+                <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-xs text-rose-800 dark:text-rose-300 flex items-center justify-center gap-2">
+                  <Lock className="w-4 h-4 text-rose-500 shrink-0" />
+                  <span>Kalfadhigan si buuxda ayaa loo xidhay. Waa inaad bilowdaa khatm cusub.</span>
                 </div>
 
-                {/* Action Buttons: Retake or Start New Khatma */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={handleRestartQuiz}
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Isku Day Mar Kale (Retake Quiz)</span>
-                  </button>
-
+                {/* Single Mandatory Action Button: Reset & Start Fresh Khatm */}
+                <div className="pt-2">
                   <button
                     type="button"
                     onClick={onResetChallenge}
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-sm transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-lg shadow-rose-600/30"
                   >
-                    <span>Bilow khidmad kale</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>Samee khatm kale (Bilow Khatm Cusub)</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
