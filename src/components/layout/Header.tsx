@@ -101,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex flex-col">
             <h1 className="text-sm sm:text-base font-bold text-blue-600 dark:text-white leading-tight flex items-center gap-1">
               <span>EMufti</span>
-              <span className="text-blue-600 dark:text-white font-extrabold">AI</span>
+              <span className="text-blue-600 font-extrabold dark:text-white">AI</span>
             </h1>
             {/* Screen-reader / contract compatibility */}
             <span className="sr-only bg-blue-600 animate-ping">Online</span>
