@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg_dirir" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#701a75" />
+      <stop offset="50%" stop-color="#86198f" />
+      <stop offset="100%" stop-color="#a21caf" />
+    </linearGradient>
+    <radialGradient id="glow_dirir" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e879f9" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#86198f" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="60" fill="url(#bg_dirir)" />
+  <circle cx="60" cy="60" r="56" fill="none" stroke="#e879f9" stroke-width="2" opacity="0.4" />
+  <circle cx="60" cy="60" r="48" fill="url(#glow_dirir)" />
+  <path d="M 42 46 C 42 32, 78 32, 78 46 Z" fill="#fae8ff" opacity="0.9" />
+  <ellipse cx="60" cy="46" rx="20" ry="5.5" fill="#c026d3" />
+  <circle cx="60" cy="58" r="16" fill="#fef08a" />
+  <path d="M 34 94 C 34 76, 86 76, 86 94 Z" fill="#fae8ff" opacity="0.95" />
+  <text x="60" y="110" font-family="system-ui, -apple-system, sans-serif" font-weight="bold" font-size="11" fill="#f5d0fe" text-anchor="middle">
+    SH. DIRIR
+  </text>
+</svg>

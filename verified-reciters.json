@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "name": "Ibrahim Al-Akdar",
+    "server": "https://cdn.mp3quran.net/audio/ibrahim-akhdar/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 10,
+    "name": "Akram Alalaqmi",
+    "server": "https://cdn.mp3quran.net/audio/akram-alaqmi/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 102,
+    "name": "Maher Al Meaqli",
+    "server": "https://cdn.mp3quran.net/audio/maher-muaiqly/r3/",
+    "rewaya": "Almusshaf Al Mojawwad - Almusshaf Al Mojawwad"
+  },
+  {
+    "id": 106,
+    "name": "Mohammad Al-Tablaway",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-tablawi/r2/",
+    "rewaya": "Almusshaf Al Mojawwad - Almusshaf Al Mojawwad"
+  },
+  {
+    "id": 107,
+    "name": "Mohammed Al-Lohaidan",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-luhaidan/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 108,
+    "name": "Mohammed Al-Muhasny",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-muhaisni/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 109,
+    "name": "Mohammed Ayyub",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-ayyub/r2/",
+    "rewaya": "Rewayat Hafs A'n Assem - Featured Recitation"
+  },
+  {
+    "id": 110,
+    "name": "Mohammad Saleh Alim Shah",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-shah/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 111,
+    "name": "Mohammed Jibreel",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-jibreel/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 112,
+    "name": "Mohammed Siddiq Al-Minshawi",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-minshawi/r3/",
+    "rewaya": "Almusshaf Al Mo'lim - Almusshaf Al Mo'lim"
+  },
+  {
+    "id": 115,
+    "name": "Mohammad Abdullkarem",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-abdulkareem/r2/",
+    "rewaya": "Rewayat Warsh A'n Nafi' Men  Tariq Abi Baker Alasbahani - Murattal"
+  },
+  {
+    "id": 116,
+    "name": "Mohammad Al-Abdullah",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-abdullah/r2/",
+    "rewaya": "Rewayat AlDorai A'n Al-Kisa'ai - Murattal"
+  },
+  {
+    "id": 118,
+    "name": "Mahmoud Khalil Al-Hussary",
+    "server": "https://cdn.mp3quran.net/audio/mahmoud-husary/r5/",
+    "rewaya": "Rewayat Qalon A'n Nafi' - Murattal"
+  },
+  {
+    "id": 12,
+    "name": "Idrees Abkr",
+    "server": "https://cdn.mp3quran.net/audio/idrees-abkar/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 121,
+    "name": "Mahmoud Ali  Albanna",
+    "server": "https://cdn.mp3quran.net/audio/mahmoud-banna/r2/",
+    "rewaya": "Almusshaf Al Mojawwad - Almusshaf Al Mojawwad"
+  },
+  {
+    "id": 123,
+    "name": "Mishary Alafasi",
+    "server": "https://cdn.mp3quran.net/audio/mishary-alafasy/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 125,
+    "name": "Mustafa Ismail",
+    "server": "https://cdn.mp3quran.net/audio/mustafa-ismail/r2/",
+    "rewaya": "Almusshaf Al Mojawwad - Almusshaf Al Mojawwad"
+  },
+  {
+    "id": 126,
+    "name": "Mustafa Al-Lahoni",
+    "server": "https://cdn.mp3quran.net/audio/mustafa-lahouni/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 127,
+    "name": "Mustafa raad Alazawy",
+    "server": "https://cdn.mp3quran.net/audio/mustafa-azzawi/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 129,
+    "name": "Muftah Alsaltany",
+    "server": "https://cdn.mp3quran.net/audio/muftah-saltani/r5/",
+    "rewaya": "Ibn Thakwan A'n Ibn Amer - Murattal"
+  },
+  {
+    "id": 13,
+    "name": "Alzain Mohammad Ahmad",
+    "server": "https://cdn.mp3quran.net/audio/zain-ahmad/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 134,
+    "name": "Mohammad Saayed",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-saayed/r1/",
+    "rewaya": "Rewayat Warsh A'n Nafi' - Murattal"
+  },
+  {
+    "id": 136,
+    "name": "Abdulelah bin Aoun",
+    "server": "https://cdn.mp3quran.net/audio/abdulelah-aoun/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 138,
+    "name": "Noreen Mohammad Siddiq",
+    "server": "https://cdn.mp3quran.net/audio/noreen-siddiq/r1/",
+    "rewaya": "Rewayat Aldori A'n Abi Amr - Murattal"
+  },
+  {
+    "id": 139,
+    "name": "Majed Al-Zamil",
+    "server": "https://cdn.mp3quran.net/audio/majed-zamil/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 14,
+    "name": "Al-Qaria Yassen",
+    "server": "https://cdn.mp3quran.net/audio/yassen-jazairi/r1/",
+    "rewaya": "Rewayat Warsh A'n Nafi' - Murattal"
+  },
+  {
+    "id": 149,
+    "name": "Maher Shakhashero",
+    "server": "https://cdn.mp3quran.net/audio/maher-shakhashiro/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 151,
+    "name": "Mahmood AlSheimy",
+    "server": "https://cdn.mp3quran.net/audio/mahmoud-sheimy/r1/",
+    "rewaya": "Rewayat AlDorai A'n Al-Kisa'ai - Murattal"
+  },
+  {
+    "id": 152,
+    "name": "Yasser Salamah",
+    "server": "https://cdn.mp3quran.net/audio/yasser-salama/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 159,
+    "name": "Khalid Almohana",
+    "server": "https://cdn.mp3quran.net/audio/khalid-mohanna/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 16,
+    "name": "Aloyoon Al-Koshi",
+    "server": "https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/",
+    "rewaya": "Rewayat Warsh A'n Nafi' - Murattal"
+  },
+  {
+    "id": 160,
+    "name": "Adel Al-Khalbany",
+    "server": "https://cdn.mp3quran.net/audio/adel-kalbani/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 161,
+    "name": "Mousa Bilal",
+    "server": "https://cdn.mp3quran.net/audio/musa-bilal/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 163,
+    "name": "Hatem Fareed Alwaer",
+    "server": "https://cdn.mp3quran.net/audio/hatem-waer/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 164,
+    "name": "Ibrahim Aljormy",
+    "server": "https://cdn.mp3quran.net/audio/ibrahim-jormy/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 165,
+    "name": "Mahmood Al rifai",
+    "server": "https://cdn.mp3quran.net/audio/mahmoud-rifai/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 17,
+    "name": "Tawfeeq As-Sayegh",
+    "server": "https://cdn.mp3quran.net/audio/tawfeeq-sayegh/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 178,
+    "name": "Ibrahim Aldosari",
+    "server": "https://cdn.mp3quran.net/audio/ibrahim-dosari/r2/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 18,
+    "name": "Jamal Shaker Abdullah",
+    "server": "https://cdn.mp3quran.net/audio/jamal-abdullah/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 181,
+    "name": "Jamaan Alosaimi",
+    "server": "https://cdn.mp3quran.net/audio/jamaan-osaimi/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 193,
+    "name": "Yousef Bin Noah Ahmad",
+    "server": "https://cdn.mp3quran.net/audio/yousef-ahmad/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 197,
+    "name": "Moeedh Alharthi",
+    "server": "https://cdn.mp3quran.net/audio/moeedh-harthi/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 198,
+    "name": "Mohammad Rashad Alshareef",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-shareef/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 20,
+    "name": "Khalid Al-Jileel",
+    "server": "https://cdn.mp3quran.net/audio/khalid-jalil/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 201,
+    "name": "Ahmed Al-trabulsi",
+    "server": "https://cdn.mp3quran.net/audio/ahmad-tarabulsi/r2/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 202,
+    "name": "Abdullah Al-Kandari",
+    "server": "https://cdn.mp3quran.net/audio/abdullah-kandari/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 203,
+    "name": "Ahmed Amer",
+    "server": "https://cdn.mp3quran.net/audio/ahmad-amer/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 206,
+    "name": "Mohammed Osman Khan",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-khan/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 208,
+    "name": "Addokali Mohammad Alalim",
+    "server": "https://cdn.mp3quran.net/audio/dokali-alim/r1/",
+    "rewaya": "Rewayat Qalon A'n Nafi' - Murattal"
+  },
+  {
+    "id": 21,
+    "name": "Khaled Al-Qahtani",
+    "server": "https://cdn.mp3quran.net/audio/khalid-qahtani/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 211,
+    "name": "Alfateh Alzubair",
+    "server": "https://cdn.mp3quran.net/audio/fateh-zubair/r1/",
+    "rewaya": "Rewayat Aldori A'n Abi Amr - Murattal"
+  },
+  {
+    "id": 21136,
+    "name": "Abdullah Alqarafi",
+    "server": "https://cdn.mp3quran.net/audio/abdullah-qarafi/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21148,
+    "name": "Abdulbadi Ghailan",
+    "server": "https://cdn.mp3quran.net/audio/abdulbadi-ghailan/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21181,
+    "name": "Muhammad Burhaji",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-burhaji/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21182,
+    "name": "Yusuf ALaidroos",
+    "server": "https://cdn.mp3quran.net/audio/yousef-aidarous/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Featured Recitation"
+  },
+  {
+    "id": 21183,
+    "name": "Hassan Aldaghriri",
+    "server": "https://cdn.mp3quran.net/audio/hassan-daghriri/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21184,
+    "name": "Muhammad Al Faqih",
+    "server": "https://cdn.mp3quran.net/audio/muhammad-faqih/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21186,
+    "name": "Junaid Adam Abdullah",
+    "server": "https://cdn.mp3quran.net/audio/junaid-abdullah/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21187,
+    "name": "Khalid Alziyadi",
+    "server": "https://cdn.mp3quran.net/audio/khalid-ziyadi/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  },
+  {
+    "id": 21193,
+    "name": "Abdul Rahman bin Abdul Razzaq Al Badr",
+    "server": "https://cdn.mp3quran.net/audio/abdulrahman-badr/r1/",
+    "rewaya": "Rewayat Hafs A'n Assem - Murattal"
+  }
+]

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <!-- Circular Paths for curved text -->
+    <path id="topCurve" d="M 50,200 A 150,150 0 1,1 350,200" fill="none" />
+    <path id="bottomCurve" d="M 350,200 A 150,150 0 0,1 50,200" fill="none" />
+    <path id="innerTopCurve" d="M 75,200 A 125,125 0 1,1 325,200" fill="none" />
+    <path id="innerBottomCurve" d="M 325,200 A 125,125 0 0,1 75,200" fill="none" />
+    
+    <filter id="subtleStamp" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+
+  <!-- Transparent Background Group -->
+  <g fill="none" stroke="#1e3a8a" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-5 200 200)">
+    <!-- Scalloped / Toothed Outer Border -->
+    <circle cx="200" cy="200" r="190" stroke="#b45309" stroke-width="2.5" stroke-dasharray="3,3" opacity="0.85" />
+    
+    <!-- Outer Main Ring -->
+    <circle cx="200" cy="200" r="182" stroke="#1e3a8a" stroke-width="5" />
+    <circle cx="200" cy="200" r="174" stroke="#d97706" stroke-width="1.8" />
+    
+    <!-- Middle Separator Ring -->
+    <circle cx="200" cy="200" r="126" stroke="#d97706" stroke-width="1.8" />
+    <circle cx="200" cy="200" r="118" stroke="#1e3a8a" stroke-width="3.5" />
+
+    <!-- Inner Core Circle -->
+    <circle cx="200" cy="200" r="92" stroke="#1e3a8a" stroke-width="1.5" stroke-dasharray="4,2" />
+
+    <!-- Stars on Sides -->
+    <path d="M 42,200 L 46,192 L 54,192 L 48,197 L 50,205 L 42,200 Z" fill="#d97706" stroke="none" />
+    <path d="M 358,200 L 354,192 L 346,192 L 352,197 L 350,205 L 358,200 Z" fill="#d97706" stroke="none" />
+
+    <!-- Top Text along curve -->
+    <text font-family="Arial, Helvetica, sans-serif" font-size="14.5" font-weight="900" fill="#1e3a8a" letter-spacing="3.5">
+      <textPath href="#topCurve" startOffset="50%" text-anchor="middle">
+        ★ EMUFTI AI ISLAMIC PLATFORM ★
+      </textPath>
+    </text>
+
+    <!-- Bottom Text along curve -->
+    <text font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="800" fill="#b45309" letter-spacing="2.5">
+      <textPath href="#bottomCurve" startOffset="50%" text-anchor="middle">
+        OFFICIAL KHATM SEAL • XAQIIJIN RASMI AH
+      </textPath>
+    </text>
+
+    <!-- Center Seal Content -->
+    <!-- Crescent & Star -->
+    <g transform="translate(182, 122) scale(0.9)">
+      <circle cx="20" cy="20" r="16" fill="#1e3a8a" />
+      <circle cx="25" cy="17" r="13" fill="#ffffff" />
+      <polygon points="26,16 28,21 33,21 29,24 31,29 26,26 22,29 24,24 20,21 25,21" fill="#d97706" />
+    </g>
+
+    <!-- Arabic Calligraphy Text in Center -->
+    <text x="200" y="180" font-family="'Traditional Arabic', 'Amiri', serif" font-size="21" font-weight="bold" fill="#1e3a8a" text-anchor="middle" letter-spacing="1">
+      خَتْمُ القُرْآنِ الكَرِيمِ
+    </text>
+
+    <!-- Center Ribbon / Banner -->
+    <rect x="110" y="196" width="180" height="28" rx="5" fill="#1e3a8a" stroke="#d97706" stroke-width="2" />
+    <text x="200" y="215" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">
+      VERIFIED &amp; APPROVED
+    </text>
+
+    <!-- Bottom Center Sub-text -->
+    <text x="200" y="246" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="bold" fill="#b45309" text-anchor="middle" letter-spacing="1.5">
+      SHAHAADO RASMI AH
+    </text>
+
+    <text x="200" y="264" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="bold" fill="#1e3a8a" text-anchor="middle" letter-spacing="1">
+      ★ 100% AUTHENTIC KHATM ★
+    </text>
+
+    <!-- Decorative inner flourishes -->
+    <circle cx="200" cy="280" r="3" fill="#d97706" stroke="none" />
+  </g>
+</svg>

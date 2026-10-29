@@ -1,0 +1,90 @@
+import { TasbeehPreset } from '../types/database';
+
+/**
+ * Common authentic Adhkar presets for the Digital Tasbeeh Counter.
+ * Each item includes Arabic text, transliteration, English, Somali,
+ * recommended repetition target (e.g. 33, 100), and authentic Hadith reference.
+ */
+export const TASBEEH_PRESETS: TasbeehPreset[] = [
+  {
+    id: 'subhanallah',
+    arabic: 'سُبْحَانَ اللَّهِ',
+    transliteration: 'SubhanAllah',
+    translation_en: 'Glory be to Allah',
+    translation_so: 'Ilaahay baa ceeb ka nasahan',
+    default_target: 33,
+    hadith_reference: 'Recited 33 times after obligatory prayer (Sahih Muslim 597)',
+  },
+  {
+    id: 'alhamdulillah',
+    arabic: 'الْحَمْدُ لِلَّهِ',
+    transliteration: 'Alhamdulillah',
+    translation_en: 'All praise is due to Allah',
+    translation_so: 'Mahad oo dhan Ilaahay bay u sugnaatay',
+    default_target: 33,
+    hadith_reference: 'Recited 33 times after obligatory prayer (Sahih Muslim 597)',
+  },
+  {
+    id: 'allahu_akbar',
+    arabic: 'اللَّهُ أَكْبَرُ',
+    transliteration: 'Allahu Akbar',
+    translation_en: 'Allah is the Greatest',
+    translation_so: 'Ilaahay baa ugu weyn wax kasta',
+    default_target: 34,
+    hadith_reference: 'Recited 33 or 34 times after prayer or before sleep (Sahih al-Bukhari 3113)',
+  },
+  {
+    id: 'la_ilaha_illallah',
+    arabic: 'لَا إِلَهَ إِلَّا اللَّهُ',
+    transliteration: 'La ilaha illa Allah',
+    translation_en: 'There is no god worthy of worship except Allah',
+    translation_so: 'Ilaah xaq lagu caabudo ma jiro Ilaahay mooyee',
+    default_target: 100,
+    hadith_reference: 'The best dhikr is La ilaha illallah (Jami` at-Tirmidhi 3383)',
+  },
+  {
+    id: 'astaghfirullah',
+    arabic: 'أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ',
+    transliteration: 'Astaghfirullah wa atubu ilayh',
+    translation_en: 'I seek Allah’s forgiveness and repent to Him',
+    translation_so: 'Ilaahay baan dambi-dhaaf weydiisanayaa xaggiisana u toobad-keenayaa',
+    default_target: 100,
+    hadith_reference: 'The Prophet ﷺ sought forgiveness over 70-100 times daily (Sahih al-Bukhari 6307)',
+  },
+  {
+    id: 'subhanallahi_wa_bihamdihi',
+    arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ',
+    transliteration: 'SubhanAllahi wa bihamdihi, SubhanAllahil-\'Azim',
+    translation_en: 'Glory be to Allah and His is the praise, Glory be to Allah the Supreme',
+    translation_so: 'Ilaahay baa nasahan oo mahad leh, Ilaaha Weyn baa ceeb ka nasahan',
+    default_target: 100,
+    hadith_reference: 'Two words light on the tongue, heavy on the Scales, beloved to the Most Merciful (Bukhari 6682)',
+  },
+  {
+    id: 'salawat',
+    arabic: 'اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ',
+    transliteration: 'Allahumma salli wa sallim \'ala Nabiyyina Muhammad',
+    translation_en: 'O Allah, send blessings and peace upon our Prophet Muhammad',
+    translation_so: 'Ilaahayow naxariis iyo nabadgalyo ku degi Nabigeena Muxammad ﷺ',
+    default_target: 10,
+    hadith_reference: 'Whoever sends blessings on me ten times in morning & evening gains my intercession (At-Tabarani)',
+  },
+  {
+    id: 'la_hawla',
+    arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
+    transliteration: 'La hawla wa la quwwata illa billah',
+    translation_en: 'There is no might nor power except with Allah',
+    translation_so: 'Xeelad iyo xoogna ma jiro Ilaahay mooyee',
+    default_target: 33,
+    hadith_reference: 'A treasure from the treasures of Paradise (Sahih al-Bukhari 6384)',
+  },
+  {
+    id: 'hasbunallah',
+    arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',
+    transliteration: 'HasbunAllahu wa ni\'mal-Wakil',
+    translation_en: 'Allah is sufficient for us, and He is the best Disposer of affairs',
+    translation_so: 'Ilaahay baa nagu filan, isagaana u wanaagsan qof talo la saarto',
+    default_target: 33,
+    hadith_reference: 'Uttered by Ibrahim (AS) when thrown into the fire and by Muhammad ﷺ (Bukhari 4563)',
+  },
+];
