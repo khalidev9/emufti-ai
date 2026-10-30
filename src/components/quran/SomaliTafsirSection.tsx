@@ -124,7 +124,8 @@ export const getHonestCoverageTag = (summary: SurahTafsirSummary) => {
 };
 
 interface SomaliTafsirSectionProps {
-  uiLanguage: 'en' | 'so' | 'ar';
+  surahs?: any[];
+  uiLanguage?: 'en' | 'so' | 'ar';
   currentSurahNumber?: number;
   initialSurahNumber?: number;
   onSurahChange?: (surahNumber: number) => void;
@@ -133,7 +134,8 @@ interface SomaliTafsirSectionProps {
 }
 
 export const SomaliTafsirSection: React.FC<SomaliTafsirSectionProps> = ({
-  uiLanguage,
+  surahs,
+  uiLanguage = 'so',
   currentSurahNumber,
   initialSurahNumber = 1,
   onSurahChange,

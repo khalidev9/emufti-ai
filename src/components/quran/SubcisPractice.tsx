@@ -53,7 +53,7 @@ interface SubcisPracticeProps {
   ayahs: Ayah[];
   selectedQari: QariReciter;
   onChangeQari: (qari: QariReciter) => void;
-  uiLanguage: 'en' | 'so' | 'ar';
+  uiLanguage?: 'en' | 'so' | 'ar';
 }
 
 // Subcis Phase & Turn States
@@ -105,7 +105,7 @@ export const SubcisPractice: React.FC<SubcisPracticeProps> = ({
   ayahs,
   selectedQari,
   onChangeQari,
-  uiLanguage,
+  uiLanguage = 'so',
 }) => {
   // ---------------------------------------------------------------------------
   // 1. Workflow Phases & Wizard Steps

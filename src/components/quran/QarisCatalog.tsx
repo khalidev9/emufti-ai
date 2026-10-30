@@ -28,14 +28,14 @@ import {
 interface QarisCatalogProps {
   selectedReciter: QariReciter;
   onSelectReciter: (qari: QariReciter, surahNumber?: number) => void;
-  uiLanguage: 'en' | 'so' | 'ar';
+  uiLanguage?: 'en' | 'so' | 'ar';
   currentSurahNumber?: number;
 }
 
 export const QarisCatalog: React.FC<QarisCatalogProps> = ({
   selectedReciter,
   onSelectReciter,
-  uiLanguage,
+  uiLanguage = 'so',
   currentSurahNumber = 1,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');

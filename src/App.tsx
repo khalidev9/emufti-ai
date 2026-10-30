@@ -14,6 +14,7 @@ import { SavedPage } from './pages/SavedPage';
 import { AdminPage } from './pages/AdminPage';
 import { AdminLoginPage } from './pages/AdminLoginPage';
 import { LoginPage, SignupPage, ForgotPasswordPage, VerifyEmailPage } from './pages/AuthPages';
+import { AuthCallbackPage } from './pages/AuthCallbackPage';
 import { ProfilePage, BillingPage, PrivacyPage, TermsPage, SupportPage } from './pages/AuxiliaryPages';
 import { QuranPage } from './pages/QuranPage';
 import { MacallinPage } from './pages/MacallinPage';
@@ -165,6 +166,7 @@ export function App() {
               <Route path="/admin" element={<AdminPage />} />
               
               {/* Auth Routes */}
+              <Route path="/auth/callback" element={<AuthCallbackPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/register" element={<SignupPage />} />
