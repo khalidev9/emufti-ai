@@ -240,34 +240,142 @@
 [data-accent="blue"] {
   --primary: 221 83% 53%;
   --ring: 221 83% 53%;
+  --brand-accent: #2563eb;
 }
 [data-accent="cyan"] {
   --primary: 199 89% 48%;
   --ring: 199 89% 48%;
+  --brand-accent: #0284c7;
 }
 [data-accent="emerald"] {
   --primary: 160 84% 39%;
   --ring: 160 84% 39%;
+  --brand-accent: #059669;
 }
 [data-accent="rose"] {
   --primary: 347 77% 50%;
   --ring: 347 77% 50%;
+  --brand-accent: #e11d48;
 }
 [data-accent="amber"] {
   --primary: 43 96% 56%;
   --ring: 43 96% 56%;
+  --brand-accent: #d97706;
 }
 [data-accent="purple"] {
   --primary: 258 90% 66%;
   --ring: 258 90% 66%;
+  --brand-accent: #7c3aed;
 }
 [data-accent="teal"] {
   --primary: 173 80% 36%;
   --ring: 173 80% 36%;
+  --brand-accent: #0d9488;
 }
 [data-accent="indigo"] {
   --primary: 239 84% 67%;
   --ring: 239 84% 67%;
+  --brand-accent: #4f46e5;
+}
+
+/* Dynamic Accent overrides for primary interactive buttons & badges */
+[data-accent="emerald"] .theme-accent-bg,
+[data-accent="emerald"] button.bg-blue-600,
+[data-accent="emerald"] .bg-blue-600 {
+  background-color: #059669 !important;
+}
+[data-accent="emerald"] button.hover\:bg-blue-700:hover,
+[data-accent="emerald"] .hover\:bg-blue-700:hover {
+  background-color: #047857 !important;
+}
+[data-accent="emerald"] .text-blue-600 {
+  color: #059669 !important;
+}
+[data-accent="emerald"] .border-blue-500,
+[data-accent="emerald"] .border-blue-600 {
+  border-color: #059669 !important;
+}
+
+[data-accent="rose"] .theme-accent-bg,
+[data-accent="rose"] button.bg-blue-600,
+[data-accent="rose"] .bg-blue-600 {
+  background-color: #e11d48 !important;
+}
+[data-accent="rose"] button.hover\:bg-blue-700:hover,
+[data-accent="rose"] .hover\:bg-blue-700:hover {
+  background-color: #be123c !important;
+}
+[data-accent="rose"] .text-blue-600 {
+  color: #e11d48 !important;
+}
+[data-accent="rose"] .border-blue-500,
+[data-accent="rose"] .border-blue-600 {
+  border-color: #e11d48 !important;
+}
+
+[data-accent="amber"] .theme-accent-bg,
+[data-accent="amber"] button.bg-blue-600,
+[data-accent="amber"] .bg-blue-600 {
+  background-color: #d97706 !important;
+}
+[data-accent="amber"] button.hover\:bg-blue-700:hover,
+[data-accent="amber"] .hover\:bg-blue-700:hover {
+  background-color: #b45309 !important;
+}
+[data-accent="amber"] .text-blue-600 {
+  color: #d97706 !important;
+}
+
+[data-accent="purple"] .theme-accent-bg,
+[data-accent="purple"] button.bg-blue-600,
+[data-accent="purple"] .bg-blue-600 {
+  background-color: #7c3aed !important;
+}
+[data-accent="purple"] button.hover\:bg-blue-700:hover,
+[data-accent="purple"] .hover\:bg-blue-700:hover {
+  background-color: #6d28d9 !important;
+}
+[data-accent="purple"] .text-blue-600 {
+  color: #7c3aed !important;
+}
+
+[data-accent="cyan"] .theme-accent-bg,
+[data-accent="cyan"] button.bg-blue-600,
+[data-accent="cyan"] .bg-blue-600 {
+  background-color: #0284c7 !important;
+}
+[data-accent="cyan"] button.hover\:bg-blue-700:hover,
+[data-accent="cyan"] .hover\:bg-blue-700:hover {
+  background-color: #0369a1 !important;
+}
+[data-accent="cyan"] .text-blue-600 {
+  color: #0284c7 !important;
+}
+
+[data-accent="teal"] .theme-accent-bg,
+[data-accent="teal"] button.bg-blue-600,
+[data-accent="teal"] .bg-blue-600 {
+  background-color: #0d9488 !important;
+}
+[data-accent="teal"] button.hover\:bg-blue-700:hover,
+[data-accent="teal"] .hover\:bg-blue-700:hover {
+  background-color: #0f766e !important;
+}
+[data-accent="teal"] .text-blue-600 {
+  color: #0d9488 !important;
+}
+
+[data-accent="indigo"] .theme-accent-bg,
+[data-accent="indigo"] button.bg-blue-600,
+[data-accent="indigo"] .bg-blue-600 {
+  background-color: #4f46e5 !important;
+}
+[data-accent="indigo"] button.hover\:bg-blue-700:hover,
+[data-accent="indigo"] .hover\:bg-blue-700:hover {
+  background-color: #4338ca !important;
+}
+[data-accent="indigo"] .text-blue-600 {
+  color: #4f46e5 !important;
 }
 
 /* Interface Density Modifiers */

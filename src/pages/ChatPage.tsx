@@ -188,7 +188,7 @@ export const ChatPage: React.FC = () => {
               {messages.length === 0 ? (
                 <WelcomeScreen onSelectPrompt={handleSelectSuggestedPrompt} />
               ) : (
-                <div className="flex-1 max-w-3xl w-full mx-auto px-3 sm:px-4 py-4 space-y-4 pb-28 sm:pb-36">
+                <div className="flex-1 max-w-3xl w-full mx-auto px-2.5 sm:px-4 py-3 sm:py-4 space-y-3.5 sm:space-y-4 pb-36 sm:pb-44">
                   {messages.map((msg) => (
                     <ChatMessage
                       key={msg.id}
@@ -197,7 +197,8 @@ export const ChatPage: React.FC = () => {
                       onOpenShareModal={() => setIsShareModalOpen(true)}
                     />
                   ))}
-                  <div ref={messagesEndRef} className="h-6" />
+                  {/* Dedicated scroll clearance spacer so messages are never hidden behind the input bar */}
+                  <div ref={messagesEndRef} className="h-24 sm:h-32 shrink-0 pointer-events-none" />
                 </div>
               )}
             </main>

@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   ChevronRight,
   Zap,
+  Award,
 } from 'lucide-react';
 import { Header } from '../components/layout/Header';
 import { Sidebar } from '../components/layout/Sidebar';
@@ -28,7 +29,6 @@ import { QuranReadingProgress, SavedItem, Conversation, PlanSlug } from '../type
 
 import { PrayerTimesWidget } from '../components/dashboard/PrayerTimesWidget';
 import { ReadingStreakWidget } from '../components/dashboard/ReadingStreakWidget';
-import { QuranKhatmChallengeWidget } from '../components/dashboard/QuranKhatmChallengeWidget';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -255,11 +255,46 @@ export const DashboardPage: React.FC = () => {
               <ReadingStreakWidget userId={userId} />
             </div>
 
-            {/* 5. 1-Month Quran Completion Khidma (Khatm Challenge: 20 Pages / 5 Prayer Slots + PDF Certificate) */}
-            <QuranKhatmChallengeWidget
-              userId={userId}
-              defaultUserName={profile?.display_name || user?.email?.split('@')[0] || 'Seeker of Knowledge'}
-            />
+            {/* 5. Clean, Lightweight Tartanka Khatmka (Quran Khatm Challenge) Banner Card */}
+            <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center text-amber-300 font-black text-xl shrink-0 shadow-inner">
+                  خ
+                </div>
+                <div className="space-y-0.5 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-white/15 px-2.5 py-0.5 rounded-full text-blue-200">
+                      Tartanka Khatmka
+                    </span>
+                    <span className="text-xs text-blue-200">604 Bog • 5 Salaadood</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-white truncate">
+                    Barnaamijka Khatmka Qur'aanka Kariimka
+                  </h3>
+                  <p className="text-xs text-blue-200/90 max-w-xl">
+                    Akhriso 20 bog maalin kasta (4 bog salaad kasta) si aad u hesho Shahaadada rasmiga ah oo leh Shaambadda.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 self-stretch sm:self-auto shrink-0 flex-wrap sm:flex-nowrap">
+                <Link
+                  to="/khitma"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white hover:bg-blue-50 text-blue-900 font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                  <Award className="w-4 h-4 text-amber-600" />
+                  <span>Fur Bogga Khatmka</span>
+                </Link>
+
+                <Link
+                  to="/verify-certificate"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Hubi Shahaadada</span>
+                </Link>
+              </div>
+            </div>
 
             {/* 6. Recent Consultations & Subscription Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

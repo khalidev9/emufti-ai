@@ -77,6 +77,7 @@ import { PlanRequestModal } from '../components/plans/PlanRequestModal';
 import { SubscriptionBadge } from '../components/common/SubscriptionBadge';
 import { UserAvatar } from '../components/common/UserAvatar';
 import { BottomNavigation } from '../components/layout/BottomNavigation';
+import { QuranBottomNavigation, QuranNavTab } from '../components/quran/QuranBottomNavigation';
 import { JuzFinderModal } from '../components/quran/JuzFinderModal';
 
 // Companion Features & Modals
@@ -161,6 +162,38 @@ export const QuranPage: React.FC<QuranPageProps> = ({ defaultTab }) => {
       }
       return next;
     });
+  };
+
+  // Map active page tab to mobile bottom navigation
+  const currentQuranNavTab: QuranNavTab = useMemo(() => {
+    if (activeTab === 'subcis' || activeTab === 'macallin') return 'subcis';
+    if (activeTab === '50qaris' || activeTab === 'qaris') return '50qaris';
+    if (activeTab === 'tafsiir' || activeTab === 'tafsir') return 'tafsir';
+    if (activeTab === 'dua') return 'duas';
+    if (activeTab === 'tasbeeh') return 'tasbeeh';
+    if (activeTab === 'bookmarks') return 'bookmarks';
+    if (activeTab === 'juz' || activeTab === 'finder') return 'finder';
+    return 'quran';
+  }, [activeTab]);
+
+  const handleQuranNavSelect = (tab: QuranNavTab) => {
+    if (tab === 'quran') {
+      handleSelectTab('reader');
+    } else if (tab === 'subcis') {
+      handleSelectTab('subcis');
+    } else if (tab === '50qaris') {
+      handleSelectTab('50qaris');
+    } else if (tab === 'tafsir') {
+      handleSelectTab('tafsiir');
+    } else if (tab === 'duas') {
+      handleSelectTab('dua');
+    } else if (tab === 'tasbeeh') {
+      handleSelectTab('tasbeeh');
+    } else if (tab === 'bookmarks') {
+      handleSelectTab('bookmarks');
+    } else if (tab === 'finder') {
+      setIsJuzFinderOpen(true);
+    }
   };
 
   // ---------------------------------------------------------------------------
@@ -1421,6 +1454,49 @@ export const QuranPage: React.FC<QuranPageProps> = ({ defaultTab }) => {
             </span>
           </button>
 
+          {/* Mobile Reading Mode Toggle Pill */}
+          <div className="flex-shrink-0 shrink-0 bg-slate-200/80 dark:bg-slate-800 p-0.5 rounded-full flex items-center border border-slate-300/70 dark:border-slate-700">
+            <button
+              type="button"
+              onClick={() => {
+                setReadingMode('verse_by_verse');
+                handleSelectTab('reader');
+              }}
+              className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
+                readingMode === 'verse_by_verse' && (activeTab === 'reader' || activeTab === 'mushaf')
+                  ? 'bg-blue-600 text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              ☰ Aayad
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setReadingMode('reading');
+                handleSelectTab('reader');
+              }}
+              className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
+                readingMode === 'reading' && (activeTab === 'reader' || activeTab === 'mushaf')
+                  ? 'bg-blue-600 text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              📖 Akhris
+            </button>
+          </div>
+
+          {/* Tools Sheet Quick Trigger (Mobile) */}
+          <button
+            type="button"
+            onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
+            className="flex-shrink-0 shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-900 transition-all cursor-pointer shadow-2xs whitespace-nowrap"
+            title="Qur'an Tools (Subcis, 50 Qaris, Duas, Tasbeeh)"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0 shrink-0" />
+            <span className="text-[11px] font-bold">Tools</span>
+          </button>
+
           {/* Quick Bookmarking Filter Toggle (Mobile) */}
           <button
             type="button"
@@ -1523,7 +1599,7 @@ export const QuranPage: React.FC<QuranPageProps> = ({ defaultTab }) => {
       {/* 3. MAIN WORKSPACE CONTAINER (Left Navigation Drawer + Canvas)   */}
       {/* ============================================================== */}
       <div
-        className="flex-1 flex items-start max-w-7xl w-full mx-auto relative min-h-screen flex-row box-border"
+        className="flex-1 flex items-start max-w-7xl w-full mx-auto relative min-h-screen flex-row box-border pb-28 md:pb-8"
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -2543,6 +2619,15 @@ export const QuranPage: React.FC<QuranPageProps> = ({ defaultTab }) => {
         <button type="button" onClick={() => handleTasbeehTap()}>Tasbeeh Tap</button>
         <button type="button" onClick={() => handleResetTasbeeh()}>Reset Tasbeeh</button>
         <span>Tus Hagaha Qur'aanka (Restart Tour)</span>
+
+        {/* Dedicated Mobile Quran Bottom Navigation Bar */}
+        <div className="md:hidden">
+          <QuranBottomNavigation
+            activeTab={currentQuranNavTab}
+            onSelectTab={handleQuranNavSelect}
+            uiLanguage={language === 'ar' ? 'ar' : language === 'so' ? 'so' : 'en'}
+          />
+        </div>
       </div>
     </div>
   );

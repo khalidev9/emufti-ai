@@ -300,13 +300,14 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   const canSend = prompt.trim().length > 0 && !isSubmitting && !isGenerating;
 
   return (
-    <div className="w-full bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-950 dark:via-slate-950/95 px-3 sm:px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] sm:pb-3.5 transition-all duration-200">
-      <div className="max-w-3xl mx-auto w-full space-y-2.5">
+    <div className="w-full bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-950 dark:via-slate-950/95 px-2.5 sm:px-4 pt-1 sm:pt-2 pb-[calc(0.4rem+env(safe-area-inset-bottom,0px))] sm:pb-3.5 transition-all duration-200">
+      <div className="max-w-3xl mx-auto w-full space-y-1.5 sm:space-y-2.5">
         {/* ================================================================= */}
         {/* 1. CATEGORIZED QUICK PROMPT CHIPS (Tafsir, Hadith, Fiqh, Dua)     */}
+        {/* Hidden on mobile to keep input box compact and prevent overlaps   */}
         {/* ================================================================= */}
         {!isKeyboardOpen && (
-          <div className="space-y-1.5">
+          <div className="hidden sm:block space-y-1.5">
             {/* Category Filter Tabs */}
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 px-0.5">
               {PROMPT_CATEGORIES.map((cat) => (
@@ -345,9 +346,9 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
         )}
 
         {/* ================================================================= */}
-        {/* 2. PROMPT INPUT BOX (ChatGPT-Style Sleek Floating Card)           */}
+        {/* 2. PROMPT INPUT BOX (ChatGPT-Style Compact Floating Card)         */}
         {/* ================================================================= */}
-        <div className="relative flex items-center bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md focus-within:shadow-xl focus-within:shadow-blue-500/10 focus-within:border-blue-500 dark:focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/15 px-3 py-2 gap-2 transition-all duration-300">
+        <div className="relative flex items-center bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xs sm:shadow-sm hover:shadow-md focus-within:shadow-lg focus-within:shadow-blue-500/10 focus-within:border-blue-500 dark:focus-within:border-blue-500 focus-within:ring-2 sm:focus-within:ring-4 focus-within:ring-blue-500/15 px-2 sm:px-3 py-1.5 sm:py-2 gap-1.5 sm:gap-2 transition-all duration-300">
           {/* Attachment / Options (+) Button */}
           <button
             type="button"
@@ -356,26 +357,26 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
                 textareaRef.current.focus();
               }
             }}
-            className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+            className="w-8 h-8 sm:w-10 sm:h-10 min-w-[32px] sm:min-w-[40px] min-h-[32px] sm:min-h-[40px] rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
             title="Attach / Quick Options"
             aria-label="Attach / Options"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           {/* Voice Microphone Icon with pulse */}
           <button
             type="button"
             onClick={handleToggleVoice}
-            className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-2xl flex items-center justify-center shrink-0 transition-all cursor-pointer ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 min-w-[32px] sm:min-w-[40px] min-h-[32px] sm:min-h-[40px] rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all cursor-pointer ${
               isRecording
-                ? 'bg-rose-500 text-white animate-pulse shadow-md ring-4 ring-rose-500/20'
+                ? 'bg-rose-500 text-white animate-pulse shadow-md ring-2 sm:ring-4 ring-rose-500/20'
                 : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
             title={isRecording ? 'Stop voice recording' : 'Record question with microphone'}
             aria-label="Voice input"
           >
-            {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            {isRecording ? <MicOff className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Mic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           </button>
 
           {/* Multiline auto-growing Textarea ("Weydii EMufti AI...") */}
@@ -389,7 +390,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
             rows={1}
             placeholder={isGenerating ? t('composer.generating', 'Generating response...') : 'Weydii EMufti AI...'}
             aria-label="Ask EMufti AI"
-            className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-xs sm:text-sm text-slate-900 dark:text-slate-100 resize-none min-h-[36px] max-h-36 py-2 px-1 leading-relaxed placeholder:text-slate-500 dark:placeholder:text-slate-400 font-medium"
+            className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-xs sm:text-sm text-slate-900 dark:text-slate-100 resize-none min-h-[30px] sm:min-h-[36px] max-h-24 sm:max-h-36 py-1.5 sm:py-2 px-1 leading-snug sm:leading-relaxed placeholder:text-slate-400 dark:placeholder:text-slate-500 font-medium"
           />
 
           {/* Circular/Pill Gradient Send Button */}
@@ -398,35 +399,35 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
               <button
                 type="button"
                 onClick={stopGeneration}
-                className="w-11 h-11 min-h-[44px] min-w-[44px] rounded-2xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 active:scale-95 transition-all flex items-center justify-center shadow-md cursor-pointer"
+                className="w-9 h-9 sm:w-11 sm:h-11 min-h-[36px] sm:min-h-[44px] min-w-[36px] sm:min-w-[44px] rounded-xl sm:rounded-2xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 active:scale-95 transition-all flex items-center justify-center shadow-xs sm:shadow-md cursor-pointer"
                 title={t('composer.stop', 'Stop generation')}
                 aria-label={t('composer.stop', 'Stop generation')}
               >
-                <Square className="w-3.5 h-3.5 fill-current" />
+                <Square className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
               </button>
             ) : (
               <button
                 type="button"
                 disabled={!prompt.trim() || isSubmitting}
                 onClick={() => handleSubmit()}
-                className={`w-11 h-11 min-h-[44px] min-w-[44px] rounded-2xl transition-all flex items-center justify-center shadow-sm active:scale-95 ${
+                className={`w-9 h-9 sm:w-11 sm:h-11 min-h-[36px] sm:min-h-[44px] min-w-[36px] sm:min-w-[44px] rounded-xl sm:rounded-2xl transition-all flex items-center justify-center shadow-xs active:scale-95 ${
                   canSend
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md hover:shadow-lg hover:scale-105 cursor-pointer'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xs sm:shadow-md hover:scale-105 cursor-pointer'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed'
                 }`}
                 title="Send"
                 aria-label="Send"
               >
-                <Send className="w-4 h-4 text-white -mr-0.5" />
+                <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white -mr-0.5" />
               </button>
             )}
           </div>
         </div>
 
         {/* ================================================================= */}
-        {/* 3. CENTERED MUTED DISCLAIMER TEXT                                 */}
+        {/* 3. CENTERED MUTED DISCLAIMER TEXT (Clean & minimal on mobile)    */}
         {/* ================================================================= */}
-        <p className="text-[11px] text-center text-slate-500 dark:text-slate-400 font-medium mt-1 px-2 select-none">
+        <p className="hidden sm:block text-[10px] sm:text-[11px] text-center text-slate-400 dark:text-slate-500 font-medium mt-0.5 sm:mt-1 px-2 select-none">
           EMufti AI can make mistakes. Please verify important information.
         </p>
       </div>

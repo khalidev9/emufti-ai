@@ -1323,7 +1323,7 @@ function parseSupabaseOAuthError(err: any): { isProviderNotEnabled: boolean; fri
             'Supabase is not configured yet. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable Google Authentication.',
         };
       }
-      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/chat` : '/chat';
+      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : '/auth/callback';
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -1331,7 +1331,7 @@ function parseSupabaseOAuthError(err: any): { isProviderNotEnabled: boolean; fri
           scopes: 'email profile openid',
           queryParams: {
             access_type: 'offline',
-            prompt: 'consent',
+            prompt: 'select_account',
           },
         },
       });
