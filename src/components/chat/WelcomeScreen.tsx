@@ -136,7 +136,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectPrompt }) 
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-6 sm:py-10 max-w-3xl mx-auto w-full text-center select-none">
+    <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 pt-6 sm:pt-10 pb-32 sm:pb-40 max-w-3xl mx-auto w-full text-center select-none">
       {/* =================================================================== */}
       {/* 1. CENTER HERO HEADER: Central Rounded Blue Icon (floatSlow) with Frontend Logo */}
       {/* =================================================================== */}

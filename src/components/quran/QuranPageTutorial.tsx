@@ -660,11 +660,11 @@ export const QuranPageTutorial: React.FC<QuranPageTutorialProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden select-none animate-in fade-in duration-200">
-      {/* 1. SPOTLIGHT & BACKDROP OVERLAY: Dim entire screen with dark translucent backdrop while target stays sharply cutout */}
+      {/* 1. SPOTLIGHT & BACKDROP OVERLAY: Dim entire screen with dark translucent backdrop while target stays sharply cutout; click anywhere on backdrop to skip/dismiss cleanly */}
       <svg
-        className="fixed inset-0 w-full h-full pointer-events-auto bg-black/70 backdrop-blur-xs z-50"
+        className="fixed inset-0 w-full h-full pointer-events-auto bg-black/70 backdrop-blur-xs z-50 cursor-pointer"
         style={{ backgroundColor: 'transparent' }}
-        onClick={handleNext}
+        onClick={handleSkip}
       >
         <defs>
           <mask id="tutorial-spotlight-mask">

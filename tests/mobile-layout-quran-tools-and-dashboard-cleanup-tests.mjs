@@ -61,31 +61,62 @@ assert(
   '1.5 Dedicated scroll clearance spacer ensures latest responses remain fully visible above composer'
 );
 
-// 2. Quran Page Navigation Tools
-console.log('\n--- 2. Quran Page Navigation Tools & Mobile Bottom Bar ---');
+const welcomeScreenContent = fs.readFileSync(path.resolve('src/components/chat/WelcomeScreen.tsx'), 'utf-8');
+assert(
+  welcomeScreenContent.includes('pb-32 sm:pb-40'),
+  '1.6 WelcomeScreen has generous bottom clearance padding (pb-32 sm:pb-40) to prevent composer overlap on mobile'
+);
+
+// 2. Quran Page Navigation Tools & Header
+console.log('\n--- 2. Quran Page Navigation Tools, Header & Onboarding ---');
 const quranPageContent = fs.readFileSync(path.resolve('src/pages/QuranPage.tsx'), 'utf-8');
+
+assert(
+  quranPageContent.includes('isTutorialOpen, setIsTutorialOpen] = useState<boolean>(() => {') &&
+  quranPageContent.includes('return false;'),
+  '2.1 QuranPage does not auto-launch onboarding tour popup on initial visit to prevent obstructing reading'
+);
+
+assert(
+  quranPageContent.includes('BookOpen className="w-5 h-5 text-white"') &&
+  quranPageContent.includes('EMufti') &&
+  quranPageContent.includes('Qur\'an'),
+  '2.2 QuranPage header renders proper dedicated Quran Logo/Icon emblem'
+);
+
+assert(
+  quranPageContent.includes('Qur\'an Tools</span>') &&
+  quranPageContent.includes('Help / Tour (Hagaha Barashada)'),
+  '2.3 QuranPage header unifies tools and tour cleanly into Qur\'an Tools navigation, removing redundant mystery icons'
+);
+
+const tutorialContent = fs.readFileSync(path.resolve('src/components/quran/QuranPageTutorial.tsx'), 'utf-8');
+assert(
+  tutorialContent.includes('onClick={handleSkip}'),
+  '2.4 QuranPageTutorial allows dismissing/skipping immediately by clicking anywhere on backdrop'
+);
 
 assert(
   quranPageContent.includes('import { QuranBottomNavigation') &&
   quranPageContent.includes('<QuranBottomNavigation'),
-  '2.1 QuranPage integrates QuranBottomNavigation for mobile view'
+  '2.5 QuranPage integrates QuranBottomNavigation for mobile view'
 );
 
 assert(
   quranPageContent.includes('handleQuranNavSelect') &&
   quranPageContent.includes('currentQuranNavTab'),
-  '2.2 QuranPage synchronizes bottom navigation tabs with active reader modes and companion tools'
+  '2.6 QuranPage synchronizes bottom navigation tabs with active reader modes and companion tools'
 );
 
 assert(
   quranPageContent.includes('data-tour="reciter-selector-mobile"') &&
   quranPageContent.includes('setReadingMode'),
-  '2.3 Mobile Quran toolbar provides quick Qaari reciter selection and reading mode toggles'
+  '2.7 Mobile Quran toolbar provides quick Qaari reciter selection and reading mode toggles'
 );
 
 assert(
   quranPageContent.includes('pb-28 md:pb-8'),
-  '2.4 Main workspace container includes bottom padding on mobile to clear bottom navigation'
+  '2.8 Main workspace container includes bottom padding on mobile to clear bottom navigation'
 );
 
 // 3. Dashboard Cleanup
