@@ -320,6 +320,20 @@ export const KHATM_QUIZ_MASTER_BANK: RawQuizItem[] = [
       "Been (Salaadda oo keliya baa loogu daraa)"
     ],
   },
+  {
+    id: 505,
+    category: 'true_false',
+    categoryLabel: 'Run mise Been (True / False)',
+    arabicSnippet: '﴿ قُلْ هُوَ اللَّهُ أَحَدٌ ﴾',
+    question: "Run mise Been: Suuratul Ikhlaas waxay u dhigantaa saddex meelood hal meel (1/3) Qur'aanka Kariimka ah?",
+    explanation: "Run: Nabigu ﷺ wuxuu xaddiiska saxiixa ah ku sheegay in Suuratul Ikhlaas u dhiganto thuluthal Qur'an (saddex meelood hal meel).",
+    correctAnswerText: "Run (Waxay u dhigantaa 1/3 Qur'aanka)",
+    distractorTexts: [
+      "Been (Waxay u dhigantaa 1/2 Qur'aanka)",
+      "Been (Waxay u dhigantaa 1/4 Qur'aanka)",
+      "Been (Fadli gaar ah ma laha)"
+    ],
+  },
 
   // -------------------------------------------------------------
   // 6. MULTIPLE CHOICE CATEGORY (Quran Facts & Ayah Sequences)

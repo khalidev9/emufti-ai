@@ -58,7 +58,10 @@ import {
   formatSomaliDayOrdinal,
   getChallengeCurrentDay,
   calculateTargetEndDate,
+  isKhatmChallengeExpired,
+  isKhatmExamRequired,
 } from '../../lib/khatmChallengeService.ts';
+import { KhitmaQuizModal } from '../khitma/KhitmaQuizModal.tsx';
 
 interface QuranKhatmChallengeWidgetProps {
   userId?: string;
@@ -93,6 +96,7 @@ export const QuranKhatmChallengeWidget: React.FC<QuranKhatmChallengeWidgetProps>
 
   // Modals & Feedback Notifications
   const [isCelebrationOpen, setIsCelebrationOpen] = useState<boolean>(false);
+  const [isQuizModalOpen, setIsQuizModalOpen] = useState<boolean>(false);
   const [isPdfGenerating, setIsPdfGenerating] = useState<boolean>(false);
   const [pdfSuccessMessage, setPdfSuccessMessage] = useState<string | null>(null);
   const [immutableAlert, setImmutableAlert] = useState<string | null>(null);
@@ -228,9 +232,29 @@ export const QuranKhatmChallengeWidget: React.FC<QuranKhatmChallengeWidgetProps>
     }
   };
 
-  // Handle PDF Certificate Download (ONLY available when 100% completed)
+  // Handle PDF Certificate Download (ONLY available when 100% completed & Quiz Passed)
   const handleDownloadPdf = async () => {
-    if (!challenge || !challenge.isCompleted) return;
+    if (!challenge) return;
+
+    if (challenge.isFailedSession) {
+      setImmutableAlert('Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale.');
+      setTimeout(() => setImmutableAlert(null), 4000);
+      return;
+    }
+
+    if (!challenge.quizPassed) {
+      // Must pass mandatory 10-question Quranic Quiz first!
+      setIsCelebrationOpen(false);
+      setIsQuizModalOpen(true);
+      return;
+    }
+
+    if (!challenge.isCompleted && !isKhatmChallengeExpired(challenge)) {
+      setImmutableAlert('Waa inaad dhammaysataa dhammaan bogagga ama muddadu dhammaataa si aad u hesho shahaadada.');
+      setTimeout(() => setImmutableAlert(null), 3500);
+      return;
+    }
+
     setIsPdfGenerating(true);
     setPdfSuccessMessage(null);
     try {
@@ -405,6 +429,44 @@ export const QuranKhatmChallengeWidget: React.FC<QuranKhatmChallengeWidgetProps>
       {/* Dynamic Collapsible Details (Hidden by default when defaultExpanded=false) */}
       {isExpanded && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+
+      {/* Failed Session Notice */}
+      {challenge?.isFailedSession && (
+        <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/70 border border-rose-300 dark:border-rose-800 text-center space-y-2">
+          <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
+            Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale
+          </p>
+          <button
+            type="button"
+            onClick={handleResetChallenge}
+            className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs cursor-pointer shadow-xs"
+          >
+            Samee khatm kale
+          </button>
+        </div>
+      )}
+
+      {/* Expiration or Completion Exam Required Banner */}
+      {!challenge?.isFailedSession && !challenge?.quizPassed && isKhatmExamRequired(challenge) && (
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+          <div className="space-y-0.5 text-center sm:text-left">
+            <span className="text-xs font-black uppercase tracking-wide flex items-center justify-center sm:justify-start gap-1.5">
+              <Award className="w-4 h-4 text-amber-200" />
+              <span>Imtixaanka Khatmka (Khatm Exam Required)</span>
+            </span>
+            <p className="text-[11px] text-amber-100">
+              Muddadii khatmka way dhammaatay. Fadlan gal imtixaanka 10-ka su'aalood si aad shahaadada u qaadato.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsQuizModalOpen(true)}
+            className="px-4 py-2 rounded-xl bg-white text-slate-900 font-bold text-xs hover:bg-amber-50 cursor-pointer shadow-xs shrink-0"
+          >
+            Gal Imtixaanka (10 Su'aalood)
+          </button>
+        </div>
+      )}
 
       {/* Daily Completion Congratulatory Notice */}
       {dailyCompletionNotice && (
@@ -979,6 +1041,20 @@ export const QuranKhatmChallengeWidget: React.FC<QuranKhatmChallengeWidgetProps>
             </div>
           </div>
         </div>
+      )}
+      {/* Mandatory Khatm Quiz Modal */}
+      {challenge && (
+        <KhitmaQuizModal
+          isOpen={isQuizModalOpen}
+          onClose={() => setIsQuizModalOpen(false)}
+          challenge={challenge}
+          userId={userId}
+          onResetChallenge={handleResetChallenge}
+          onSuccessPassed={() => {
+            const updated = getKhatmChallenge(userId);
+            setChallenge(updated);
+          }}
+        />
       )}
     </div>
   );

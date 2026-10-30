@@ -573,6 +573,31 @@ export interface TasbeehPreset {
   hadith_reference?: string;
 }
 
+export type KhatmChallengeStatus = 'active' | 'completed' | 'failed';
+
+export interface KhatmChallengeRecord {
+  id: string;
+  user_id: string;
+  user_name: string;
+  start_date: string;
+  target_end_date: string;
+  duration_days: number;
+  status: KhatmChallengeStatus;
+  completed_slots: Record<string, boolean>;
+  is_completed: boolean;
+  completed_at?: string;
+  screen_id?: string;
+  issue_date?: string;
+  signature?: string;
+  quiz_score?: number;
+  quiz_passed?: boolean;
+  quiz_completed_at?: string;
+  is_failed_session?: boolean;
+  failed_at?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
 export interface QuranAccessStatus {
   authenticated: boolean;
   user_id?: string;

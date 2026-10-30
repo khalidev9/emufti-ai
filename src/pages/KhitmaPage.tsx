@@ -44,6 +44,9 @@ import {
   generateKhatmCertificatePdf,
   generateAdminTestCertificatePdf,
   resetKhatmChallenge,
+  isKhatmChallengeExpired,
+  isKhatmExamRequired,
+  fetchKhatmChallengeFromSupabase,
 } from '../lib/khatmChallengeService';
 import { ThemeToggle } from '../components/common/ThemeToggle';
 import { KhitmaRegistrationWizard } from '../components/khitma/KhitmaRegistrationWizard';
@@ -103,24 +106,51 @@ export const KhitmaPage: React.FC = () => {
 
   // Sync state on user change & verify active registration
   useEffect(() => {
-    const existing = getKhatmChallenge(userId);
-    if (existing && existing.isRegistered) {
-      setChallenge(existing);
-      setName(existing.userName);
-      setStartDate(existing.startDate);
-      if ([30, 20, 15, 10, 7].includes(existing.durationDays)) {
-        setSelectedDuration(existing.durationDays);
-      } else {
-        setSelectedDuration('others');
-        setCustomDays(existing.durationDays);
+    let mounted = true;
+
+    async function loadChallenge() {
+      // 1. Check local storage
+      let existing = getKhatmChallenge(userId);
+
+      // 2. Cross-device sync check from Supabase if not found locally or for authenticated users
+      if ((!existing || !existing.isRegistered) && userId && userId !== 'guest_user') {
+        const remote = await fetchKhatmChallengeFromSupabase(userId);
+        if (remote && mounted) {
+          existing = remote;
+        }
       }
-      // Registered user: automatically route straight to active Task Page
-      setViewMode('tasks');
-    } else {
-      setChallenge(null);
-      // Unregistered user: display 3-Step Registration Form
-      setViewMode('wizard');
+
+      if (!mounted) return;
+
+      if (existing && existing.isRegistered) {
+        setChallenge(existing);
+        setName(existing.userName);
+        setStartDate(existing.startDate);
+        if ([30, 20, 15, 10, 7].includes(existing.durationDays)) {
+          setSelectedDuration(existing.durationDays);
+        } else {
+          setSelectedDuration('others');
+          setCustomDays(existing.durationDays);
+        }
+        // Registered user: automatically route straight to active Task Page
+        setViewMode('tasks');
+
+        // Automatic prompt check: If duration has expired or challenge completed, prompt user for Khatm Exam!
+        if (isKhatmExamRequired(existing)) {
+          setIsQuizModalOpen(true);
+        }
+      } else {
+        setChallenge(null);
+        // Unregistered user: display 3-Step Registration Form
+        setViewMode('wizard');
+      }
     }
+
+    loadChallenge();
+
+    return () => {
+      mounted = false;
+    };
   }, [userId]);
 
   // Effective days for calculation
@@ -263,12 +293,24 @@ export const KhitmaPage: React.FC = () => {
 
   // Handle PDF Download (checks if mandatory quiz has been passed)
   const handleDownloadPdf = async () => {
-    if (!challenge || !challenge.isCompleted) return;
+    if (!challenge) return;
+
+    if (challenge.isFailedSession) {
+      setImmutableAlert('Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale.');
+      setTimeout(() => setImmutableAlert(null), 4000);
+      return;
+    }
 
     if (!challenge.quizPassed) {
       // Must pass mandatory 10-question Quranic Quiz first!
       setIsCelebrationOpen(false);
       setIsQuizModalOpen(true);
+      return;
+    }
+
+    if (!challenge.isCompleted && !isKhatmChallengeExpired(challenge)) {
+      setImmutableAlert('Waa inaad dhammaysataa dhammaan 604-ta bog ama muddada khatmku dhammaataa si aad u hesho shahaadada.');
+      setTimeout(() => setImmutableAlert(null), 3500);
       return;
     }
 
@@ -507,6 +549,32 @@ export const KhitmaPage: React.FC = () => {
                 >
                   <RotateCcw className="w-4 h-4" />
                   <span>Samee khatm kale (Bilow Khatm Cusub)</span>
+                </button>
+              </div>
+            )}
+
+            {/* EXPIRATION EXAM PROMPT CARD (DURATION ELAPSED & MUST TAKE EXAM) */}
+            {!challenge?.isFailedSession && !challenge?.quizPassed && isKhatmExamRequired(challenge) && (
+              <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-amber-500 via-amber-600 to-indigo-700 text-white shadow-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 animate-in fade-in">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Award className="w-6 h-6 text-yellow-200 animate-pulse shrink-0" />
+                    <span className="text-sm sm:text-base font-black uppercase tracking-wide">
+                      Muddadii Khatmka Waa Dhammaatay • Imtixaanka Khatmka (Exam Required)
+                    </span>
+                  </div>
+                  <p className="text-xs text-amber-100 max-w-xl leading-relaxed">
+                    Muddadii barnaamijkaaga Khatmka ayaa dhammaatay ama waxaad dhammaysatay akhriska. Si aad u hesho Shahaadada Khatmka ee rasmiga ah oo leh Shaambadda, waa inaad gashaa imtixaanka 10-ka su'aalood oo aad keentaa ugu yaraan <strong>7/10</strong>.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsQuizModalOpen(true)}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white text-slate-900 font-black text-xs shadow-lg hover:bg-amber-50 transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 active:scale-95"
+                >
+                  <Award className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Gal Imtixaanka Khatmka (10 Su'aalood)</span>
                 </button>
               </div>
             )}
@@ -886,7 +954,8 @@ export const KhitmaPage: React.FC = () => {
             userId={userId}
             onResetChallenge={handleResetKhatm}
             onSuccessPassed={() => {
-              setChallenge((prev) => (prev ? { ...prev, quizPassed: true } : null));
+              const updated = getKhatmChallenge(userId);
+              setChallenge(updated || ((prev) => (prev ? { ...prev, quizPassed: true, status: 'completed' } : null)) as any);
             }}
           />
         )}

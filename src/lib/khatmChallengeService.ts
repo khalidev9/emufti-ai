@@ -10,6 +10,8 @@
 
 import { jsPDF } from 'jspdf';
 import { recordReadingLog } from './quranAnalyticsService.ts';
+import { supabase, isSupabaseConfigured } from './supabase.ts';
+import { KhatmChallengeStatus } from '../types/database.ts';
 
 export type PrayerSlotKey = 'fajr' | 'dhuhr' | 'asr' | 'maghrib' | 'isha';
 export type KhatmDuration = 30 | 20 | 15 | 10 | 7 | number;
@@ -93,6 +95,7 @@ export interface KhatmChallengeData {
   startDate: string; // YYYY-MM-DD
   targetEndDate: string; // YYYY-MM-DD
   durationDays: number;
+  status?: KhatmChallengeStatus; // 'active' | 'completed' | 'failed'
   createdAt: string;
   isRegistered: boolean;
   completedSlots: Record<string, boolean>; // key: `day_${day}_${slot}`
@@ -452,6 +455,128 @@ export function isPrayerSlotLocked(
 }
 
 /**
+ * Check if the Khatm Challenge duration has expired (Target End Date reached or exceeded)
+ */
+export function isKhatmChallengeExpired(challenge: KhatmChallengeData | null): boolean {
+  if (!challenge || !challenge.isRegistered || !challenge.startDate) return false;
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(challenge.targetEndDate);
+    target.setHours(0, 0, 0, 0);
+
+    // Expired when current calendar date is strictly on or after targetEndDate
+    return today.getTime() >= target.getTime();
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check whether a user must take the Khatm Exam before claiming/downloading certificate.
+ * Triggered when:
+ * 1. Challenge is completed (all 604 pages checked), OR
+ * 2. Challenge duration has expired (time elapsed)
+ * AND quiz has NOT yet been passed.
+ */
+export function isKhatmExamRequired(challenge: KhatmChallengeData | null): boolean {
+  if (!challenge || !challenge.isRegistered) return false;
+  if (challenge.quizPassed) return false; // Already passed
+  if (challenge.isFailedSession) return false; // Already marked failed session
+
+  const isExpired = isKhatmChallengeExpired(challenge);
+  const isFinished = !!challenge.isCompleted;
+
+  return isExpired || isFinished;
+}
+
+/**
+ * Sync Khatm challenge with Supabase database (background, non-blocking with offline fallback)
+ */
+export async function syncKhatmChallengeToSupabase(data: KhatmChallengeData): Promise<void> {
+  if (!isSupabaseConfigured || !data.userId || data.userId === 'guest_user') return;
+
+  try {
+    const row = {
+      id: data.id,
+      user_id: data.userId,
+      user_name: data.userName,
+      start_date: data.startDate,
+      target_end_date: data.targetEndDate,
+      duration_days: data.durationDays,
+      status: (data.status || (data.isFailedSession ? 'failed' : data.isCompleted ? 'completed' : 'active')) as KhatmChallengeStatus,
+      completed_slots: data.completedSlots || {},
+      is_completed: !!data.isCompleted,
+      completed_at: data.completedAt || null,
+      screen_id: data.screenId || null,
+      issue_date: data.issueDate || null,
+      signature: data.signature || null,
+      quiz_score: data.quizScore ?? null,
+      quiz_passed: data.quizPassed ?? null,
+      quiz_completed_at: data.quizCompletedAt || null,
+      is_failed_session: !!data.isFailedSession,
+      failed_at: data.failedAt || null,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error } = await supabase.from('khatm_challenges').upsert(row, { onConflict: 'id' });
+    if (error) {
+      console.warn('[khatmChallengeService] Supabase sync non-blocking error:', error.message);
+    }
+  } catch (err) {
+    console.warn('[khatmChallengeService] Supabase sync exception:', err);
+  }
+}
+
+/**
+ * Fetch Khatm challenge from Supabase (for cross-device sync)
+ */
+export async function fetchKhatmChallengeFromSupabase(userId: string): Promise<KhatmChallengeData | null> {
+  if (!isSupabaseConfigured || !userId || userId === 'guest_user') return null;
+
+  try {
+    const { data, error } = await supabase
+      .from('khatm_challenges')
+      .select('*')
+      .eq('user_id', userId)
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) return null;
+
+    const challenge: KhatmChallengeData = {
+      id: data.id,
+      userId: data.user_id,
+      userName: data.user_name,
+      startDate: data.start_date,
+      targetEndDate: data.target_end_date,
+      durationDays: data.duration_days,
+      status: data.status,
+      createdAt: data.created_at,
+      isRegistered: true,
+      completedSlots: data.completed_slots || {},
+      isCompleted: data.is_completed,
+      completedAt: data.completed_at || undefined,
+      screenId: data.screen_id || undefined,
+      issueDate: data.issue_date || undefined,
+      signature: data.signature || undefined,
+      quizScore: data.quiz_score ?? undefined,
+      quizPassed: data.quiz_passed ?? undefined,
+      quizCompletedAt: data.quiz_completed_at || undefined,
+      isFailedSession: data.is_failed_session,
+      failedAt: data.failed_at || undefined,
+    };
+
+    saveKhatmChallenge(userId, challenge);
+    return challenge;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Check if all 5 slots of a given day are completed
  */
 export function isDayAllSlotsDone(challenge: KhatmChallengeData | null, dayIndex: number): boolean {
@@ -501,6 +626,7 @@ export function registerKhatmChallenge(
     startDate: start,
     targetEndDate: targetEnd,
     durationDays,
+    status: 'active',
     createdAt: new Date().toISOString(),
     isRegistered: true,
     completedSlots,
@@ -512,7 +638,7 @@ export function registerKhatmChallenge(
 }
 
 /**
- * Save Khatm challenge data
+ * Save Khatm challenge data (Local Storage + Supabase non-blocking sync)
  */
 export function saveKhatmChallenge(userId: string, data: KhatmChallengeData): void {
   try {
@@ -520,6 +646,8 @@ export function saveKhatmChallenge(userId: string, data: KhatmChallengeData): vo
     if (storage) {
       storage.setItem(`${STORAGE_PREFIX}${userId}`, JSON.stringify(data));
     }
+    // Background async sync to Supabase
+    syncKhatmChallengeToSupabase(data);
   } catch (e) {
     console.error('Failed to save Khatm challenge:', e);
   }
@@ -535,8 +663,10 @@ export function recordKhatmQuizResult(
 ): KhatmChallengeData | null {
   const current = getKhatmChallenge(userId);
   if (!current) return null;
+  const status: KhatmChallengeStatus = passed ? 'completed' : 'failed';
   const updated: KhatmChallengeData = {
     ...current,
+    status,
     quizScore: score,
     quizPassed: passed,
     quizCompletedAt: new Date().toISOString(),
@@ -555,6 +685,7 @@ export function markKhatmSessionFailed(userId: string): KhatmChallengeData | nul
   if (!current) return null;
   const updated: KhatmChallengeData = {
     ...current,
+    status: 'failed',
     quizPassed: false,
     isFailedSession: true,
     failedAt: new Date().toISOString(),
@@ -637,6 +768,7 @@ export function togglePrayerSlot(
 
   const updated: KhatmChallengeData = {
     ...challenge,
+    status: isFinished ? (challenge.quizPassed ? 'completed' : 'active') : 'active',
     completedSlots: updatedSlots,
     isCompleted: isFinished,
     completedAt: isFinished ? (challenge.completedAt || new Date().toISOString()) : undefined,
@@ -720,6 +852,7 @@ export function markDayComplete(
 
   const updated: KhatmChallengeData = {
     ...challenge,
+    status: isFinished ? (challenge.quizPassed ? 'completed' : 'active') : 'active',
     completedSlots: updatedSlots,
     isCompleted: isFinished,
     completedAt: isFinished ? (challenge.completedAt || new Date().toISOString()) : undefined,
@@ -828,6 +961,8 @@ export function getChallengeStats(challenge: KhatmChallengeData | null) {
   } catch {}
 
   const isCompleted = challenge.isCompleted || completedSlotsCount >= totalSlots;
+  const isExpired = isKhatmChallengeExpired(challenge);
+  const examRequired = isKhatmExamRequired(challenge);
 
   return {
     durationDays: duration,
@@ -840,6 +975,8 @@ export function getChallengeStats(challenge: KhatmChallengeData | null) {
     completionPercent,
     daysRemaining,
     isCompleted,
+    isExpired,
+    examRequired,
     completedDaysCount,
     currentAllowedDay,
     screenId: challenge.screenId,
