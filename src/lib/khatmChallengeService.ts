@@ -664,9 +664,13 @@ export function recordKhatmQuizResult(
   const current = getKhatmChallenge(userId);
   if (!current) return null;
   const status: KhatmChallengeStatus = passed ? 'completed' : 'failed';
+  const screenId = current.screenId || (passed ? generateUniqueScreenId() : undefined);
+  const issueDate = current.issueDate || (passed ? new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : undefined);
   const updated: KhatmChallengeData = {
     ...current,
     status,
+    screenId,
+    issueDate,
     quizScore: score,
     quizPassed: passed,
     quizCompletedAt: new Date().toISOString(),
@@ -674,7 +678,60 @@ export function recordKhatmQuizResult(
     failedAt: !passed ? new Date().toISOString() : undefined,
   };
   saveKhatmChallenge(userId, updated);
+
+  if (passed && screenId) {
+    saveVerifiedCertificate({
+      screenId,
+      challengeId: updated.id,
+      userName: updated.userName,
+      startDate: updated.startDate,
+      completionDate: updated.completedAt ? updated.completedAt.split('T')[0] : new Date().toISOString().split('T')[0],
+      issueDate: issueDate || new Date().toISOString().split('T')[0],
+      durationDays: updated.durationDays,
+      totalPages: TOTAL_PAGES,
+      totalJuz: TOTAL_JUZ,
+      totalPrayerSessions: updated.durationDays * 5,
+      signature: updated.signature || "Guddiga Sare ee Qur'aanka Kariimka & Culimada EMufti AI",
+      verifiedAt: new Date().toISOString(),
+      isValid: true,
+    });
+  }
+
   return updated;
+}
+
+/**
+ * Retrieve Khatm Challenge status, syncing with Supabase for authenticated users
+ * with fallback to local storage
+ */
+export async function getOrFetchKhatmChallenge(userId: string): Promise<KhatmChallengeData | null> {
+  let existing = getKhatmChallenge(userId);
+  if (userId && userId !== 'guest_user') {
+    try {
+      const remote = await fetchKhatmChallengeFromSupabase(userId);
+      if (remote) {
+        existing = remote;
+      }
+    } catch {
+      // offline fallback
+    }
+  }
+  return existing;
+}
+
+/**
+ * Strictly check if the user is eligible to view/download their Khatm Certificate:
+ * 1. Must be actively registered
+ * 2. Must not be a failed session
+ * 3. Duration timer must be expired OR all pages completed
+ * 4. Must have passed the Khatm Quiz (score >= 7/10)
+ */
+export function isKhatmCertificateUnlocked(challenge: KhatmChallengeData | null): boolean {
+  if (!challenge || !challenge.isRegistered) return false;
+  if (challenge.isFailedSession || challenge.status === 'failed') return false;
+  const isTimeOrPagesDone = isKhatmChallengeExpired(challenge) || !!challenge.isCompleted;
+  const hasPassedExam = !!challenge.quizPassed && (challenge.quizScore === undefined || challenge.quizScore >= 7);
+  return isTimeOrPagesDone && hasPassedExam;
 }
 
 /**

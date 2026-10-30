@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   Trophy,
   BookOpen,
@@ -56,12 +56,21 @@ import { Footer } from '../components/layout/Footer';
 
 export const KhitmaPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { user, profile, isAdmin } = useAuth();
   const userId = user?.id || 'seeker_user';
   const defaultUserName = profile?.display_name || user?.email?.split('@')[0] || 'Seeker of Knowledge';
 
-  // Read URL query parameters
+  // Read URL query parameters and redirect notices
+  const noticeParam = searchParams.get('notice');
+  const locationNotice = (location.state as any)?.notice;
+  const initialRedirectNotice =
+    noticeParam === 'not_started' || locationNotice
+      ? 'Weli ma aadan bilaabin Khatm. Fadlan dooro oo bilow Khatm cusub.'
+      : null;
+  const [redirectNotice, setRedirectNotice] = useState<string | null>(initialRedirectNotice);
+
   const durationParam = searchParams.get('duration');
   const initialDuration = durationParam ? parseInt(durationParam, 10) : 30;
   const viewParam = searchParams.get('view');
@@ -432,15 +441,15 @@ export const KhitmaPage: React.FC = () => {
               </div>
             ) : null}
 
-            {/* Quick jump to Certificate Preview */}
-            <a
-              href="#certificate-preview-section"
+            {/* Quick Link to Protected Certificate Page */}
+            <Link
+              to="/certificate"
               className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 sm:py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800 text-[10px] sm:text-[11px] font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 transition-all cursor-pointer"
-              title="Eeg Muuqaalka Shahaadada (Certificate Preview)"
+              title="Shahaadada Khatmka (Khatm Certificate)"
             >
               <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
               <span>Shahaadada</span>
-            </a>
+            </Link>
 
             {/* Admin Test Sample PDF trigger - Strictly restricted to Authenticated Admins only */}
             {isAdmin && (
@@ -465,6 +474,23 @@ export const KhitmaPage: React.FC = () => {
           2. MAIN CONTENT AREA
          ========================================================================= */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-3 sm:px-6 py-6 sm:py-10 space-y-5 sm:space-y-6 overflow-x-hidden">
+        {/* Redirect Notice when unstarted user visits certificate */}
+        {redirectNotice && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/70 border-2 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-black flex items-center justify-between gap-3 animate-in fade-in shadow-md">
+            <div className="flex items-center gap-2.5">
+              <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>{redirectNotice}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setRedirectNotice(null)}
+              className="p-1 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 text-amber-700 dark:text-amber-300 transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {/* Alerts & Feedback */}
         {adminTestSuccess && (
           <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-200 dark:border-indigo-800 text-indigo-900 dark:text-indigo-200 text-xs font-bold flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 animate-in fade-in shadow-xs">
@@ -910,36 +936,89 @@ export const KhitmaPage: React.FC = () => {
               )}
             </div>
 
-            {/* 5. LIVE EXACT CERTIFICATE PREVIEW & SAMPLE (Matching image_7c6815.png) */}
+            {/* 5. PROTECTED CERTIFICATE SECTION (Strict Access Controls & LockScreen Guard) */}
             <div id="certificate-preview-section" className="pt-2">
-              <KhatmCertificatePreview
-                challenge={challenge}
-                userName={challenge?.userName || name}
-                startDate={challenge?.startDate}
-                targetEndDate={challenge?.targetEndDate}
-                durationDays={challenge?.durationDays || effectiveDays}
-                screenId={challenge?.screenId}
-                onDownloadPdf={handleDownloadPdf}
-                isGeneratingPdf={isPdfGenerating}
-              />
+              {challenge?.isFailedSession || challenge?.status === 'failed' || (challenge?.quizScore !== undefined && challenge.quizScore < 7 && challenge.quizPassed === false) ? (
+                <div className="p-6 rounded-3xl bg-rose-50 dark:bg-rose-950/70 border-2 border-rose-300 dark:border-rose-800 text-center space-y-4 shadow-lg">
+                  <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto">
+                    <Lock className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="text-base sm:text-lg font-black text-rose-700 dark:text-rose-300">
+                      Mahadsanid, kuma aanad guuleysanin shahaadada khatmka. Samee khatm kale
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+                      Kalfadhigan Khatmka si buuxda ayaa loo xidhay maadaama buundada imtixaankaagu ka yaraatay 7/10. Si aad mar kale u hesho fursad shahaado, fadlan bilow khatm cusub.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleResetKhatm}
+                    className="px-6 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>Samee khatm kale (Bilow Khatm Cusub)</span>
+                  </button>
+                </div>
+              ) : !isKhatmChallengeExpired(challenge) && !challenge?.isCompleted ? (
+                <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-4 shadow-sm">
+                  <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto">
+                    <Lock className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-950 px-2.5 py-0.5 rounded-full inline-block">
+                      Shahaadada Weli Waa Qufulan Tahay 🔒
+                    </span>
+                    <h3 className="text-base font-black text-slate-900 dark:text-white">
+                      Muddadii Khatmka Weli Ma Dhammaan
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                      Shahaadada Khatmka waxaad heli kartaa oo keliya marka aad dhammaysato dhammaan 604-ta bog ama muddadii aad dooratay ay si buuxda u dhammaato, ka dibna aad baasto imtixaanka 10-ka su'aalood (≥ 7/10).
+                    </p>
+                  </div>
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <Clock className="w-4 h-4 text-blue-600" />
+                    <span>Horumarka: {stats.completedSlotsCount}/{stats.totalSlots} Kalfadhi ({stats.progressPercent}%)</span>
+                  </div>
+                </div>
+              ) : !challenge?.quizPassed ? (
+                <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-indigo-50 dark:from-slate-900 dark:to-slate-850 border border-amber-300 dark:border-amber-800 text-center space-y-4 shadow-md">
+                  <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 bg-amber-200 dark:bg-amber-900 px-2.5 py-0.5 rounded-full inline-block">
+                      Imtixaanka Khatmka Waa Qasab 📝
+                    </span>
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                      Geli Imtixaanka si aad u Furto Shahaadada
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+                      Muddadii tartankaaga waa dhammaatay. Si aad u furto oo u degsato Shahaadada rasmiga ah oo leh Shaambadda, waa inaad gashaa oo aad baastaa imtixaanka 10-ka su'aalood (≥ 7/10).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsQuizModalOpen(true)}
+                    className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 text-white font-black text-xs shadow-md hover:from-amber-400 hover:to-indigo-500 transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer"
+                  >
+                    <Award className="w-4 h-4" />
+                    <span>Bilow Imtixaanka Khatmka (10 Su'aalood)</span>
+                  </button>
+                </div>
+              ) : (
+                <KhatmCertificatePreview
+                  challenge={challenge}
+                  userName={challenge?.userName || name}
+                  startDate={challenge?.startDate}
+                  targetEndDate={challenge?.targetEndDate}
+                  durationDays={challenge?.durationDays || effectiveDays}
+                  screenId={challenge?.screenId}
+                  onDownloadPdf={handleDownloadPdf}
+                  isGeneratingPdf={isPdfGenerating}
+                />
+              )}
             </div>
-          </div>
-        )}
-
-        {/* Certificate Preview Showcase for Wizard Mode */}
-        {viewMode === 'wizard' && (
-          <div id="certificate-preview-section" className="pt-4">
-            <KhatmCertificatePreview
-              challenge={challenge}
-              isSample={!challenge?.isRegistered}
-              userName={challenge?.userName || name || 'Khaliid Axmed'}
-              durationDays={challenge?.durationDays || effectiveDays}
-              startDate={challenge?.startDate || startDate}
-              targetEndDate={challenge?.targetEndDate || previewTargetEnd}
-              screenId={challenge?.screenId || 'EMUFTI-KHATM-SAMPLE'}
-              onDownloadPdf={handleDownloadPdf}
-              isGeneratingPdf={isPdfGenerating}
-            />
           </div>
         )}
 

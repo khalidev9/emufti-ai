@@ -73,6 +73,11 @@ export const KhatmCertificatePreview: React.FC<KhatmCertificatePreviewProps> = (
     challenge?.signature || "Guddiga Sare ee Culimada & Qur'aanka EMufti AI";
 
   const handleDownload = async () => {
+    if (challenge && !challenge.quizPassed && !isSample) {
+      alert("Waa inaad baastaa imtixaanka 10-ka su'aalood (≥ 7/10) si aad u hesho shahaadada.");
+      return;
+    }
+
     if (onDownloadPdf) {
       onDownloadPdf();
       return;

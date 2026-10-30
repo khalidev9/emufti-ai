@@ -24,6 +24,7 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { QuizPage } from './pages/QuizPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { CertificateVerificationPage } from './pages/CertificateVerificationPage';
+import { KhatmCertificatePage } from './pages/KhatmCertificatePage';
 import { KhitmaPage } from './pages/KhitmaPage';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
@@ -92,6 +93,11 @@ export function App() {
               <Route path="/track-request" element={<TrackRequestPage />} />
               <Route path="/verify-certificate" element={<CertificateVerificationPage />} />
               <Route path="/verify" element={<CertificateVerificationPage />} />
+              <Route path="/certificate" element={<KhatmCertificatePage />} />
+              <Route path="/khatm/certificate" element={<KhatmCertificatePage />} />
+              <Route path="/khitma/certificate" element={<KhatmCertificatePage />} />
+              <Route path="/khatma/certificate" element={<KhatmCertificatePage />} />
+              <Route path="/khatm-certificate" element={<KhatmCertificatePage />} />
               <Route path="/khitma" element={<KhitmaPage />} />
               <Route path="/khitma/tasks" element={<KhitmaPage />} />
               <Route path="/khatma" element={<KhitmaPage />} />

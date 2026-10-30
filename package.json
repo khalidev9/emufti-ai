@@ -34,6 +34,7 @@
     "test:runtime-errors": "node tests/profile-and-settings-runtime-errors-tests.mjs",
     "test:contrast": "node tests/tafsir-and-ai-text-contrast-tests.mjs",
     "test:chat-quiz": "node tests/chat-overhaul-and-quiz-system-tests.mjs",
+    "test:khatm-access": "node tests/khatm-certificate-strict-access-controls-tests.mjs",
     "test:backend-repairs": "node --test tests/backend-database-errors-repair-tests.mjs",
     "test:mobile-layout": "node --test tests/mobile-profile-badge-and-settings-tabs-tests.mjs",
     "test:chat-redesign": "node --test tests/mobile-ui-and-chat-redesign-tests.mjs",
